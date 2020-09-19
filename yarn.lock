@@ -1693,6 +1693,13 @@
     consola "^2.15.0"
     defu "^3.1.0"
 
+"@nuxtjs/date-fns@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/date-fns/-/date-fns-1.4.0.tgz#7cb0a03938e95bced9b089820c32982a9e0638c7"
+  integrity sha512-YuAKM9Y1Ig3u5ZPlW466taL4S7llE5oxgM4Vnth3pEqpRtnAF3jlxlQ3MYv5HcdOnhWBx2pgrbRTSQmCqKF/4w==
+  dependencies:
+    date-fns "^2.16.1"
+
 "@nuxtjs/eslint-config-typescript@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/eslint-config-typescript/-/eslint-config-typescript-3.0.0.tgz#4c307ba1d7038d3d4a6aa40ebd4e0bd80a9af512"
@@ -4538,6 +4545,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@^2.16.1:
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
 de-indent@^1.0.2:
   version "1.0.2"

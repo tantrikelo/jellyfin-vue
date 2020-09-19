@@ -56,6 +56,7 @@ const config: NuxtConfig = {
     'plugins/displayPreferenceApi.ts',
     'plugins/imageApi.ts',
     'plugins/itemsApi.ts',
+    'plugins/sessionApiPlugin.ts',
     'plugins/tvShowsApi.ts',
     'plugins/userApi.ts',
     'plugins/userLibraryApi.ts',
@@ -73,7 +74,13 @@ const config: NuxtConfig = {
     '@nuxt/typescript-build',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    [
+      '@nuxtjs/date-fns',
+      {
+        /* module options */
+      }
+    ]
   ],
   /*
    ** Nuxt.js modules
