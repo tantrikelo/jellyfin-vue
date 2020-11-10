@@ -9,7 +9,7 @@
         v-bind="attrs"
         v-on="on"
       >
-        {{ $t('filter') }}
+        Filter
         <v-icon right> mdi-menu-down </v-icon>
       </v-btn>
       <v-btn v-else class="my-2" icon v-bind="attrs" v-on="on">
@@ -48,12 +48,7 @@
           </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel
-        v-if="
-          collectionInfo.CollectionType === 'movies' ||
-          collectionInfo.CollectionType === 'tvshows'
-        "
-      >
+      <v-expansion-panel>
         <v-expansion-panel-header>
           {{ $t('features') }}
         </v-expansion-panel-header>
@@ -86,7 +81,7 @@
           </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel v-if="genreFilters.length > 0">
+      <v-expansion-panel>
         <v-expansion-panel-header>{{ $t('genres') }}</v-expansion-panel-header>
         <v-expansion-panel-content class="filter-content">
           <v-list dense>
@@ -112,7 +107,7 @@
           </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel v-if="ratingFilters.length > 0">
+      <v-expansion-panel>
         <v-expansion-panel-header>
           {{ $t('parentalRatings') }}
         </v-expansion-panel-header>
@@ -140,12 +135,7 @@
           </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel
-        v-if="
-          collectionInfo.CollectionType === 'movies' ||
-          collectionInfo.CollectionType === 'tvshows'
-        "
-      >
+      <v-expansion-panel>
         <v-expansion-panel-header>
           {{ $t('videoTypes') }}
         </v-expansion-panel-header>
@@ -175,7 +165,7 @@
           </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel v-if="yearFilters.length > 0">
+      <v-expansion-panel>
         <v-expansion-panel-header>
           {{ $t('years') }}
         </v-expansion-panel-header>
@@ -242,7 +232,7 @@ export default Vue.extend({
           name: ItemFilter.IsFavorite
         },
         { label: this.$t('liked'), name: ItemFilter.Likes },
-        { label: this.$t('unliked'), name: ItemFilter.Dislikes }
+        { label: this.$t('notLiked'), name: ItemFilter.Dislikes }
       ],
       selectedStatusFilters: [],
       featureFilters: [
@@ -288,28 +278,24 @@ export default Vue.extend({
   },
   methods: {
     async refreshItems() {
-      try {
-        const response = (
-          await this.$api.filter.getQueryFiltersLegacy({
-            userId: this.$auth.user.Id,
-            parentId: this.$route.params.viewId,
-            includeItemTypes: this.itemsType
-          })
-        ).data;
+      const response = (
+        await this.$api.filter.getQueryFiltersLegacy({
+          userId: this.$auth.user.Id,
+          parentId: this.$route.params.viewId,
+          includeItemTypes: this.itemsType
+        })
+      ).data;
 
-        if (response.Genres) {
-          this.genreFilters = response.Genres;
-        }
+      if (response.Genres) {
+        this.genreFilters = response.Genres;
+      }
 
-        if (response.OfficialRatings) {
-          this.ratingFilters = response.OfficialRatings;
-        }
+      if (response.OfficialRatings) {
+        this.ratingFilters = response.OfficialRatings;
+      }
 
-        if (response.Years) {
-          this.yearFilters = response.Years;
-        }
-      } catch (error) {
-        console.error('Unable to retrieve filters:', error);
+      if (response.Years) {
+        this.yearFilters = response.Years;
       }
     },
     emitFilterChange() {

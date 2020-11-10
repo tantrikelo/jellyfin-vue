@@ -127,6 +127,7 @@ export default Vue.extend({
         // Otherwise, figure out the shape based on the type of the item
         switch (this.item.Type) {
           case 'Audio':
+          case 'Genre':
           case 'Folder':
           case 'MusicAlbum':
           case 'MusicArtist':

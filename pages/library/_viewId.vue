@@ -142,6 +142,7 @@ export default Vue.extend({
         this.$nuxt.$loading.finish();
       }
     } catch (error) {
+      console.error(error);
       // Can't get given library ID
       this.$nuxt.error({
         statusCode: 404,
