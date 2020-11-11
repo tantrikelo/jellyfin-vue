@@ -3464,6 +3464,37 @@ export enum FileSystemEntryType {
 }
 
 /**
+ * Class FontFile.
+ * @export
+ * @interface FontFile
+ */
+export interface FontFile {
+    /**
+     * Gets or sets the name.
+     * @type {string}
+     * @memberof FontFile
+     */
+    Name?: string | null;
+    /**
+     * Gets or sets the size.
+     * @type {number}
+     * @memberof FontFile
+     */
+    Size?: number;
+    /**
+     * Gets or sets the date created.
+     * @type {string}
+     * @memberof FontFile
+     */
+    DateCreated?: string;
+    /**
+     * Gets or sets the date modified.
+     * @type {string}
+     * @memberof FontFile
+     */
+    DateModified?: string;
+}
+/**
  * 
  * @export
  * @enum {string}
@@ -3750,10 +3781,10 @@ export interface GetProgramsDto {
     LibrarySeriesId?: string;
     /**
      * Gets or sets specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.  Optional.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof GetProgramsDto
      */
-    Fields?: string | null;
+    Fields?: Array<ItemFields> | null;
 }
 /**
  * Class GroupInfoView.
@@ -4244,6 +4275,75 @@ export interface ItemCounts {
     ItemCount?: number;
 }
 /**
+ * Used to control the data that gets attached to DtoBaseItems.
+ * @export
+ * @enum {string}
+ */
+export enum ItemFields {
+    AirTime = 'AirTime',
+    CanDelete = 'CanDelete',
+    CanDownload = 'CanDownload',
+    ChannelInfo = 'ChannelInfo',
+    Chapters = 'Chapters',
+    ChildCount = 'ChildCount',
+    CumulativeRunTimeTicks = 'CumulativeRunTimeTicks',
+    CustomRating = 'CustomRating',
+    DateCreated = 'DateCreated',
+    DateLastMediaAdded = 'DateLastMediaAdded',
+    DisplayPreferencesId = 'DisplayPreferencesId',
+    Etag = 'Etag',
+    ExternalUrls = 'ExternalUrls',
+    Genres = 'Genres',
+    HomePageUrl = 'HomePageUrl',
+    ItemCounts = 'ItemCounts',
+    MediaSourceCount = 'MediaSourceCount',
+    MediaSources = 'MediaSources',
+    OriginalTitle = 'OriginalTitle',
+    Overview = 'Overview',
+    ParentId = 'ParentId',
+    Path = 'Path',
+    People = 'People',
+    PlayAccess = 'PlayAccess',
+    ProductionLocations = 'ProductionLocations',
+    ProviderIds = 'ProviderIds',
+    PrimaryImageAspectRatio = 'PrimaryImageAspectRatio',
+    RecursiveItemCount = 'RecursiveItemCount',
+    Settings = 'Settings',
+    ScreenshotImageTags = 'ScreenshotImageTags',
+    SeriesPrimaryImage = 'SeriesPrimaryImage',
+    SeriesStudio = 'SeriesStudio',
+    SortName = 'SortName',
+    SpecialEpisodeNumbers = 'SpecialEpisodeNumbers',
+    Studios = 'Studios',
+    BasicSyncInfo = 'BasicSyncInfo',
+    SyncInfo = 'SyncInfo',
+    Taglines = 'Taglines',
+    Tags = 'Tags',
+    RemoteTrailers = 'RemoteTrailers',
+    MediaStreams = 'MediaStreams',
+    SeasonUserData = 'SeasonUserData',
+    ServiceName = 'ServiceName',
+    ThemeSongIds = 'ThemeSongIds',
+    ThemeVideoIds = 'ThemeVideoIds',
+    ExternalEtag = 'ExternalEtag',
+    PresentationUniqueKey = 'PresentationUniqueKey',
+    InheritedParentalRatingValue = 'InheritedParentalRatingValue',
+    ExternalSeriesId = 'ExternalSeriesId',
+    SeriesPresentationUniqueKey = 'SeriesPresentationUniqueKey',
+    DateLastRefreshed = 'DateLastRefreshed',
+    DateLastSaved = 'DateLastSaved',
+    RefreshState = 'RefreshState',
+    ChannelImage = 'ChannelImage',
+    EnableMediaSourceDisplay = 'EnableMediaSourceDisplay',
+    Width = 'Width',
+    Height = 'Height',
+    ExtraIds = 'ExtraIds',
+    LocalTrailerCount = 'LocalTrailerCount',
+    IsHD = 'IsHD',
+    SpecialFeatureCount = 'SpecialFeatureCount'
+}
+
+/**
  * Enum ItemFilter.
  * @export
  * @enum {string}
@@ -4321,12 +4421,6 @@ export interface LibraryOptions {
      * @memberof LibraryOptions
      */
     ExtractChapterImagesDuringLibraryScan?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof LibraryOptions
-     */
-    DownloadImagesInAdvance?: boolean;
     /**
      * 
      * @type {Array<MediaPathInfo>}
@@ -10362,6 +10456,37 @@ export interface UpdateUserPassword {
     ResetPassword?: boolean;
 }
 /**
+ * Upload subtitles dto.
+ * @export
+ * @interface UploadSubtitleDto
+ */
+export interface UploadSubtitleDto {
+    /**
+     * Gets or sets the subtitle language.
+     * @type {string}
+     * @memberof UploadSubtitleDto
+     */
+    Language: string;
+    /**
+     * Gets or sets the subtitle format.
+     * @type {string}
+     * @memberof UploadSubtitleDto
+     */
+    Format: string;
+    /**
+     * Gets or sets a value indicating whether the subtitle is forced.
+     * @type {boolean}
+     * @memberof UploadSubtitleDto
+     */
+    IsForced: boolean;
+    /**
+     * Gets or sets the subtitle data.
+     * @type {string}
+     * @memberof UploadSubtitleDto
+     */
+    Data: string;
+}
+/**
  * Class UserConfiguration.
  * @export
  * @interface UserConfiguration
@@ -11292,326 +11417,6 @@ export class ActivityLogApi extends BaseAPI {
 
 
 /**
- * AlbumsApi - axios parameter creator
- * @export
- */
-export const AlbumsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Finds albums similar to a given album.
-         * @param {string} albumId The album id.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {string} [excludeArtistIds] Optional. Ids of artists to exclude.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSimilarAlbums: async (albumId: string, userId?: string, excludeArtistIds?: string, limit?: number, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'albumId' is not null or undefined
-            if (albumId === null || albumId === undefined) {
-                throw new RequiredError('albumId','Required parameter albumId was null or undefined when calling getSimilarAlbums.');
-            }
-            const localVarPath = `/Albums/{albumId}/Similar`
-                .replace(`{${"albumId"}}`, encodeURIComponent(String(albumId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
-            if (userId !== undefined) {
-                localVarQueryParameter['userId'] = userId;
-            }
-
-            if (excludeArtistIds !== undefined) {
-                localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
-            }
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-
-    
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Finds artists similar to a given artist.
-         * @param {string} artistId The artist id.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {string} [excludeArtistIds] Optional. Ids of artists to exclude.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSimilarArtists: async (artistId: string, userId?: string, excludeArtistIds?: string, limit?: number, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'artistId' is not null or undefined
-            if (artistId === null || artistId === undefined) {
-                throw new RequiredError('artistId','Required parameter artistId was null or undefined when calling getSimilarArtists.');
-            }
-            const localVarPath = `/Artists/{artistId}/Similar`
-                .replace(`{${"artistId"}}`, encodeURIComponent(String(artistId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
-            if (userId !== undefined) {
-                localVarQueryParameter['userId'] = userId;
-            }
-
-            if (excludeArtistIds !== undefined) {
-                localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
-            }
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-
-    
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * AlbumsApi - functional programming interface
- * @export
- */
-export const AlbumsApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Finds albums similar to a given album.
-         * @param {string} albumId The album id.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {string} [excludeArtistIds] Optional. Ids of artists to exclude.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getSimilarAlbums(albumId: string, userId?: string, excludeArtistIds?: string, limit?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await AlbumsApiAxiosParamCreator(configuration).getSimilarAlbums(albumId, userId, excludeArtistIds, limit, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @summary Finds artists similar to a given artist.
-         * @param {string} artistId The artist id.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {string} [excludeArtistIds] Optional. Ids of artists to exclude.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getSimilarArtists(artistId: string, userId?: string, excludeArtistIds?: string, limit?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await AlbumsApiAxiosParamCreator(configuration).getSimilarArtists(artistId, userId, excludeArtistIds, limit, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-    }
-};
-
-/**
- * AlbumsApi - factory interface
- * @export
- */
-export const AlbumsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    return {
-        /**
-         * 
-         * @summary Finds albums similar to a given album.
-         * @param {string} albumId The album id.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {string} [excludeArtistIds] Optional. Ids of artists to exclude.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSimilarAlbums(albumId: string, userId?: string, excludeArtistIds?: string, limit?: number, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return AlbumsApiFp(configuration).getSimilarAlbums(albumId, userId, excludeArtistIds, limit, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Finds artists similar to a given artist.
-         * @param {string} artistId The artist id.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {string} [excludeArtistIds] Optional. Ids of artists to exclude.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSimilarArtists(artistId: string, userId?: string, excludeArtistIds?: string, limit?: number, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return AlbumsApiFp(configuration).getSimilarArtists(artistId, userId, excludeArtistIds, limit, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for getSimilarAlbums operation in AlbumsApi.
- * @export
- * @interface AlbumsApiGetSimilarAlbumsRequest
- */
-export interface AlbumsApiGetSimilarAlbumsRequest {
-    /**
-     * The album id.
-     * @type {string}
-     * @memberof AlbumsApiGetSimilarAlbums
-     */
-    readonly albumId: string
-
-    /**
-     * Optional. Filter by user id, and attach user data.
-     * @type {string}
-     * @memberof AlbumsApiGetSimilarAlbums
-     */
-    readonly userId?: string
-
-    /**
-     * Optional. Ids of artists to exclude.
-     * @type {string}
-     * @memberof AlbumsApiGetSimilarAlbums
-     */
-    readonly excludeArtistIds?: string
-
-    /**
-     * Optional. The maximum number of records to return.
-     * @type {number}
-     * @memberof AlbumsApiGetSimilarAlbums
-     */
-    readonly limit?: number
-}
-
-/**
- * Request parameters for getSimilarArtists operation in AlbumsApi.
- * @export
- * @interface AlbumsApiGetSimilarArtistsRequest
- */
-export interface AlbumsApiGetSimilarArtistsRequest {
-    /**
-     * The artist id.
-     * @type {string}
-     * @memberof AlbumsApiGetSimilarArtists
-     */
-    readonly artistId: string
-
-    /**
-     * Optional. Filter by user id, and attach user data.
-     * @type {string}
-     * @memberof AlbumsApiGetSimilarArtists
-     */
-    readonly userId?: string
-
-    /**
-     * Optional. Ids of artists to exclude.
-     * @type {string}
-     * @memberof AlbumsApiGetSimilarArtists
-     */
-    readonly excludeArtistIds?: string
-
-    /**
-     * Optional. The maximum number of records to return.
-     * @type {number}
-     * @memberof AlbumsApiGetSimilarArtists
-     */
-    readonly limit?: number
-}
-
-/**
- * AlbumsApi - object-oriented interface
- * @export
- * @class AlbumsApi
- * @extends {BaseAPI}
- */
-export class AlbumsApi extends BaseAPI {
-    /**
-     * 
-     * @summary Finds albums similar to a given album.
-     * @param {AlbumsApiGetSimilarAlbumsRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AlbumsApi
-     */
-    public getSimilarAlbums(requestParameters: AlbumsApiGetSimilarAlbumsRequest, options?: any) {
-        return AlbumsApiFp(this.configuration).getSimilarAlbums(requestParameters.albumId, requestParameters.userId, requestParameters.excludeArtistIds, requestParameters.limit, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Finds artists similar to a given artist.
-     * @param {AlbumsApiGetSimilarArtistsRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AlbumsApi
-     */
-    public getSimilarArtists(requestParameters: AlbumsApiGetSimilarArtistsRequest, options?: any) {
-        return AlbumsApiFp(this.configuration).getSimilarArtists(requestParameters.artistId, requestParameters.userId, requestParameters.excludeArtistIds, requestParameters.limit, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-/**
  * ApiKeyApi - axios parameter creator
  * @export
  */
@@ -11941,7 +11746,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
@@ -11969,7 +11774,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAlbumArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getAlbumArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Artists/AlbumArtists`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -12009,7 +11814,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -12190,7 +11995,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
@@ -12218,7 +12023,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Artists`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -12258,7 +12063,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -12393,7 +12198,7 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
@@ -12421,7 +12226,7 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ArtistsApiAxiosParamCreator(configuration).getAlbumArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -12451,7 +12256,7 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
@@ -12479,7 +12284,7 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ArtistsApiAxiosParamCreator(configuration).getArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -12503,7 +12308,7 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
@@ -12531,7 +12336,7 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ArtistsApiFp(configuration).getAlbumArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -12553,7 +12358,7 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
@@ -12581,7 +12386,7 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ArtistsApiFp(configuration).getArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
@@ -12629,11 +12434,11 @@ export interface ArtistsApiGetAlbumArtistsRequest {
     readonly parentId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
@@ -12867,11 +12672,11 @@ export interface ArtistsApiGetArtistsRequest {
     readonly parentId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
@@ -16593,11 +16398,11 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {string} [sortOrder] Optional. Sort Order - Ascending,Descending.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getChannelItems: async (channelId: string, folderId?: string, userId?: string, startIndex?: number, limit?: number, sortOrder?: string, filters?: Array<ItemFilter>, sortBy?: string, fields?: string, options: any = {}): Promise<RequestArgs> => {
+        getChannelItems: async (channelId: string, folderId?: string, userId?: string, startIndex?: number, limit?: number, sortOrder?: string, filters?: Array<ItemFilter>, sortBy?: string, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
             if (channelId === null || channelId === undefined) {
                 throw new RequiredError('channelId','Required parameter channelId was null or undefined when calling getChannelItems.');
@@ -16650,7 +16455,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['sortBy'] = sortBy;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -16753,12 +16558,12 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestChannelItems: async (userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: string, channelIds?: string, options: any = {}): Promise<RequestArgs> => {
+        getLatestChannelItems: async (userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Channels/Items/Latest`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -16794,7 +16599,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['filters'] = filters;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -16867,11 +16672,11 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {string} [sortOrder] Optional. Sort Order - Ascending,Descending.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getChannelItems(channelId: string, folderId?: string, userId?: string, startIndex?: number, limit?: number, sortOrder?: string, filters?: Array<ItemFilter>, sortBy?: string, fields?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getChannelItems(channelId: string, folderId?: string, userId?: string, startIndex?: number, limit?: number, sortOrder?: string, filters?: Array<ItemFilter>, sortBy?: string, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ChannelsApiAxiosParamCreator(configuration).getChannelItems(channelId, folderId, userId, startIndex, limit, sortOrder, filters, sortBy, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -16904,12 +16709,12 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: string, channelIds?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ChannelsApiAxiosParamCreator(configuration).getLatestChannelItems(userId, startIndex, limit, filters, fields, channelIds, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -16955,11 +16760,11 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {string} [sortOrder] Optional. Sort Order - Ascending,Descending.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getChannelItems(channelId: string, folderId?: string, userId?: string, startIndex?: number, limit?: number, sortOrder?: string, filters?: Array<ItemFilter>, sortBy?: string, fields?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getChannelItems(channelId: string, folderId?: string, userId?: string, startIndex?: number, limit?: number, sortOrder?: string, filters?: Array<ItemFilter>, sortBy?: string, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ChannelsApiFp(configuration).getChannelItems(channelId, folderId, userId, startIndex, limit, sortOrder, filters, sortBy, fields, options).then((request) => request(axios, basePath));
         },
         /**
@@ -16984,12 +16789,12 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: string, channelIds?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ChannelsApiFp(configuration).getLatestChannelItems(userId, startIndex, limit, filters, fields, channelIds, options).then((request) => request(axios, basePath));
         },
     };
@@ -17072,11 +16877,11 @@ export interface ChannelsApiGetChannelItemsRequest {
     readonly sortBy?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof ChannelsApiGetChannelItems
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 }
 
 /**
@@ -17163,11 +16968,11 @@ export interface ChannelsApiGetLatestChannelItemsRequest {
     readonly filters?: Array<ItemFilter>
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof ChannelsApiGetLatestChannelItems
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Specify one or more channel id\&#39;s, comma delimited.
@@ -21021,7 +20826,7 @@ export const DlnaServerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async processConnectionManagerControlRequest(serverId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ControlResponse>> {
+        async processConnectionManagerControlRequest(serverId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await DlnaServerApiAxiosParamCreator(configuration).processConnectionManagerControlRequest(serverId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -21035,7 +20840,7 @@ export const DlnaServerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async processContentDirectoryControlRequest(serverId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ControlResponse>> {
+        async processContentDirectoryControlRequest(serverId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await DlnaServerApiAxiosParamCreator(configuration).processContentDirectoryControlRequest(serverId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -21049,7 +20854,7 @@ export const DlnaServerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async processMediaReceiverRegistrarControlRequest(serverId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ControlResponse>> {
+        async processMediaReceiverRegistrarControlRequest(serverId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await DlnaServerApiAxiosParamCreator(configuration).processMediaReceiverRegistrarControlRequest(serverId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -21203,7 +21008,7 @@ export const DlnaServerApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        processConnectionManagerControlRequest(serverId: string, options?: any): AxiosPromise<ControlResponse> {
+        processConnectionManagerControlRequest(serverId: string, options?: any): AxiosPromise<any> {
             return DlnaServerApiFp(configuration).processConnectionManagerControlRequest(serverId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -21213,7 +21018,7 @@ export const DlnaServerApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        processContentDirectoryControlRequest(serverId: string, options?: any): AxiosPromise<ControlResponse> {
+        processContentDirectoryControlRequest(serverId: string, options?: any): AxiosPromise<any> {
             return DlnaServerApiFp(configuration).processContentDirectoryControlRequest(serverId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -21223,7 +21028,7 @@ export const DlnaServerApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        processMediaReceiverRegistrarControlRequest(serverId: string, options?: any): AxiosPromise<ControlResponse> {
+        processMediaReceiverRegistrarControlRequest(serverId: string, options?: any): AxiosPromise<any> {
             return DlnaServerApiFp(configuration).processMediaReceiverRegistrarControlRequest(serverId, options).then((request) => request(axios, basePath));
         },
     };
@@ -29049,30 +28854,16 @@ export const GenresApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary Gets all genres from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-         * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -29082,7 +28873,7 @@ export const GenresApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getGenres: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getGenres: async (startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Genres`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -29102,10 +28893,6 @@ export const GenresApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (minCommunityRating !== undefined) {
-                localVarQueryParameter['minCommunityRating'] = minCommunityRating;
-            }
-
             if (startIndex !== undefined) {
                 localVarQueryParameter['startIndex'] = startIndex;
             }
@@ -29122,7 +28909,7 @@ export const GenresApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -29134,40 +28921,8 @@ export const GenresApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
-            if (filters) {
-                localVarQueryParameter['filters'] = filters;
-            }
-
             if (isFavorite !== undefined) {
                 localVarQueryParameter['isFavorite'] = isFavorite;
-            }
-
-            if (mediaTypes !== undefined) {
-                localVarQueryParameter['mediaTypes'] = mediaTypes;
-            }
-
-            if (genres !== undefined) {
-                localVarQueryParameter['genres'] = genres;
-            }
-
-            if (genreIds !== undefined) {
-                localVarQueryParameter['genreIds'] = genreIds;
-            }
-
-            if (officialRatings !== undefined) {
-                localVarQueryParameter['officialRatings'] = officialRatings;
-            }
-
-            if (tags !== undefined) {
-                localVarQueryParameter['tags'] = tags;
-            }
-
-            if (years !== undefined) {
-                localVarQueryParameter['years'] = years;
-            }
-
-            if (enableUserData !== undefined) {
-                localVarQueryParameter['enableUserData'] = enableUserData;
             }
 
             if (imageTypeLimit !== undefined) {
@@ -29176,26 +28931,6 @@ export const GenresApiAxiosParamCreator = function (configuration?: Configuratio
 
             if (enableImageTypes) {
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
-            }
-
-            if (person !== undefined) {
-                localVarQueryParameter['person'] = person;
-            }
-
-            if (personIds !== undefined) {
-                localVarQueryParameter['personIds'] = personIds;
-            }
-
-            if (personTypes !== undefined) {
-                localVarQueryParameter['personTypes'] = personTypes;
-            }
-
-            if (studios !== undefined) {
-                localVarQueryParameter['studios'] = studios;
-            }
-
-            if (studioIds !== undefined) {
-                localVarQueryParameter['studioIds'] = studioIds;
             }
 
             if (userId !== undefined) {
@@ -29267,30 +29002,16 @@ export const GenresApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Gets all genres from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-         * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -29300,8 +29021,8 @@ export const GenresApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getGenres(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await GenresApiAxiosParamCreator(configuration).getGenres(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
+        async getGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await GenresApiAxiosParamCreator(configuration).getGenres(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -29330,30 +29051,16 @@ export const GenresApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary Gets all genres from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-         * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -29363,8 +29070,8 @@ export const GenresApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getGenres(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return GenresApiFp(configuration).getGenres(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
+        getGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return GenresApiFp(configuration).getGenres(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -29397,13 +29104,6 @@ export interface GenresApiGetGenreRequest {
  */
 export interface GenresApiGetGenresRequest {
     /**
-     * Optional filter by minimum community rating.
-     * @type {number}
-     * @memberof GenresApiGetGenres
-     */
-    readonly minCommunityRating?: number
-
-    /**
      * Optional. The record index to start at. All items with a lower index will be dropped from the results.
      * @type {number}
      * @memberof GenresApiGetGenres
@@ -29432,11 +29132,11 @@ export interface GenresApiGetGenresRequest {
     readonly parentId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof GenresApiGetGenres
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
@@ -29453,67 +29153,11 @@ export interface GenresApiGetGenresRequest {
     readonly includeItemTypes?: string
 
     /**
-     * Optional. Specify additional filters to apply.
-     * @type {Array<ItemFilter>}
-     * @memberof GenresApiGetGenres
-     */
-    readonly filters?: Array<ItemFilter>
-
-    /**
      * Optional filter by items that are marked as favorite, or not.
      * @type {boolean}
      * @memberof GenresApiGetGenres
      */
     readonly isFavorite?: boolean
-
-    /**
-     * Optional filter by MediaType. Allows multiple, comma delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly mediaTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly genres?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly genreIds?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly officialRatings?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly tags?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly years?: string
-
-    /**
-     * Optional, include user data.
-     * @type {boolean}
-     * @memberof GenresApiGetGenres
-     */
-    readonly enableUserData?: boolean
 
     /**
      * Optional, the max number of images to return, per image type.
@@ -29528,41 +29172,6 @@ export interface GenresApiGetGenresRequest {
      * @memberof GenresApiGetGenres
      */
     readonly enableImageTypes?: Array<ImageType>
-
-    /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly person?: string
-
-    /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person id.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly personIds?: string
-
-    /**
-     * Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly personTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly studios?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof GenresApiGetGenres
-     */
-    readonly studioIds?: string
 
     /**
      * User id.
@@ -29635,7 +29244,7 @@ export class GenresApi extends BaseAPI {
      * @memberof GenresApi
      */
     public getGenres(requestParameters: GenresApiGetGenresRequest = {}, options?: any) {
-        return GenresApiFp(this.configuration).getGenres(requestParameters.minCommunityRating, requestParameters.startIndex, requestParameters.limit, requestParameters.searchTerm, requestParameters.parentId, requestParameters.fields, requestParameters.excludeItemTypes, requestParameters.includeItemTypes, requestParameters.filters, requestParameters.isFavorite, requestParameters.mediaTypes, requestParameters.genres, requestParameters.genreIds, requestParameters.officialRatings, requestParameters.tags, requestParameters.years, requestParameters.enableUserData, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.person, requestParameters.personIds, requestParameters.personTypes, requestParameters.studios, requestParameters.studioIds, requestParameters.userId, requestParameters.nameStartsWithOrGreater, requestParameters.nameStartsWith, requestParameters.nameLessThan, requestParameters.enableImages, requestParameters.enableTotalRecordCount, options).then((request) => request(this.axios, this.basePath));
+        return GenresApiFp(this.configuration).getGenres(requestParameters.startIndex, requestParameters.limit, requestParameters.searchTerm, requestParameters.parentId, requestParameters.fields, requestParameters.excludeItemTypes, requestParameters.includeItemTypes, requestParameters.isFavorite, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.userId, requestParameters.nameStartsWithOrGreater, requestParameters.nameStartsWith, requestParameters.nameLessThan, requestParameters.enableImages, requestParameters.enableTotalRecordCount, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -38137,7 +37746,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38145,7 +37754,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromAlbum: async (id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getInstantMixFromAlbum: async (id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromAlbum.');
@@ -38178,7 +37787,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -38222,7 +37831,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38230,7 +37839,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromArtists: async (id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getInstantMixFromArtists: async (id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromArtists.');
@@ -38263,7 +37872,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -38307,7 +37916,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38315,7 +37924,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromItem: async (id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getInstantMixFromItem: async (id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromItem.');
@@ -38348,7 +37957,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -38392,7 +38001,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} name The genre name.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38400,7 +38009,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromMusicGenre: async (name: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getInstantMixFromMusicGenre: async (name: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'name' is not null or undefined
             if (name === null || name === undefined) {
                 throw new RequiredError('name','Required parameter name was null or undefined when calling getInstantMixFromMusicGenre.');
@@ -38433,7 +38042,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -38477,7 +38086,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38485,7 +38094,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromMusicGenres: async (id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getInstantMixFromMusicGenres: async (id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromMusicGenres.');
@@ -38518,7 +38127,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -38562,7 +38171,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38570,7 +38179,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromPlaylist: async (id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getInstantMixFromPlaylist: async (id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromPlaylist.');
@@ -38603,7 +38212,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -38647,7 +38256,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38655,7 +38264,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromSong: async (id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getInstantMixFromSong: async (id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromSong.');
@@ -38688,7 +38297,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -38741,7 +38350,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38749,7 +38358,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInstantMixFromAlbum(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getInstantMixFromAlbum(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await InstantMixApiAxiosParamCreator(configuration).getInstantMixFromAlbum(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -38762,7 +38371,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38770,7 +38379,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInstantMixFromArtists(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getInstantMixFromArtists(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await InstantMixApiAxiosParamCreator(configuration).getInstantMixFromArtists(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -38783,7 +38392,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38791,7 +38400,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInstantMixFromItem(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getInstantMixFromItem(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await InstantMixApiAxiosParamCreator(configuration).getInstantMixFromItem(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -38804,7 +38413,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {string} name The genre name.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38812,7 +38421,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInstantMixFromMusicGenre(name: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getInstantMixFromMusicGenre(name: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await InstantMixApiAxiosParamCreator(configuration).getInstantMixFromMusicGenre(name, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -38825,7 +38434,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38833,7 +38442,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInstantMixFromMusicGenres(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getInstantMixFromMusicGenres(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await InstantMixApiAxiosParamCreator(configuration).getInstantMixFromMusicGenres(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -38846,7 +38455,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38854,7 +38463,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInstantMixFromPlaylist(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getInstantMixFromPlaylist(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await InstantMixApiAxiosParamCreator(configuration).getInstantMixFromPlaylist(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -38867,7 +38476,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38875,7 +38484,7 @@ export const InstantMixApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInstantMixFromSong(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getInstantMixFromSong(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await InstantMixApiAxiosParamCreator(configuration).getInstantMixFromSong(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -38897,7 +38506,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38905,7 +38514,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromAlbum(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getInstantMixFromAlbum(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return InstantMixApiFp(configuration).getInstantMixFromAlbum(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38914,7 +38523,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38922,7 +38531,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromArtists(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getInstantMixFromArtists(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return InstantMixApiFp(configuration).getInstantMixFromArtists(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38931,7 +38540,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38939,7 +38548,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromItem(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getInstantMixFromItem(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return InstantMixApiFp(configuration).getInstantMixFromItem(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38948,7 +38557,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {string} name The genre name.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38956,7 +38565,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromMusicGenre(name: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getInstantMixFromMusicGenre(name: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return InstantMixApiFp(configuration).getInstantMixFromMusicGenre(name, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38965,7 +38574,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38973,7 +38582,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromMusicGenres(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getInstantMixFromMusicGenres(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return InstantMixApiFp(configuration).getInstantMixFromMusicGenres(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38982,7 +38591,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -38990,7 +38599,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromPlaylist(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getInstantMixFromPlaylist(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return InstantMixApiFp(configuration).getInstantMixFromPlaylist(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
         /**
@@ -38999,7 +38608,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {string} id The item id.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -39007,7 +38616,7 @@ export const InstantMixApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInstantMixFromSong(id: string, userId?: string, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getInstantMixFromSong(id: string, userId?: string, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return InstantMixApiFp(configuration).getInstantMixFromSong(id, userId, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
     };
@@ -39041,11 +38650,11 @@ export interface InstantMixApiGetInstantMixFromAlbumRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof InstantMixApiGetInstantMixFromAlbum
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -39104,11 +38713,11 @@ export interface InstantMixApiGetInstantMixFromArtistsRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof InstantMixApiGetInstantMixFromArtists
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -39167,11 +38776,11 @@ export interface InstantMixApiGetInstantMixFromItemRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof InstantMixApiGetInstantMixFromItem
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -39230,11 +38839,11 @@ export interface InstantMixApiGetInstantMixFromMusicGenreRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof InstantMixApiGetInstantMixFromMusicGenre
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -39293,11 +38902,11 @@ export interface InstantMixApiGetInstantMixFromMusicGenresRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof InstantMixApiGetInstantMixFromMusicGenres
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -39356,11 +38965,11 @@ export interface InstantMixApiGetInstantMixFromPlaylistRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof InstantMixApiGetInstantMixFromPlaylist
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -39419,11 +39028,11 @@ export interface InstantMixApiGetInstantMixFromSongRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof InstantMixApiGetInstantMixFromSong
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -41466,7 +41075,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on the item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
@@ -41516,7 +41125,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems: async (uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getItems: async (uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'uId' is not null or undefined
             if (uId === null || uId === undefined) {
                 throw new RequiredError('uId','Required parameter uId was null or undefined when calling getItems.');
@@ -41681,7 +41290,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -41924,7 +41533,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on the item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
@@ -41974,7 +41583,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems2: async (uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getItems2: async (uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'uId' is not null or undefined
             if (uId === null || uId === undefined) {
                 throw new RequiredError('uId','Required parameter uId was null or undefined when calling getItems2.');
@@ -42139,7 +41748,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -42353,7 +41962,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {number} [limit] The item limit.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -42365,7 +41974,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getResumeItems: async (userId: string, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, mediaTypes?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludeItemTypes?: string, includeItemTypes?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getResumeItems: async (userId: string, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, mediaTypes?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludeItemTypes?: string, includeItemTypes?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling getResumeItems.');
@@ -42406,7 +42015,7 @@ export const ItemsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -42506,7 +42115,7 @@ export const ItemsApiFp = function(configuration?: Configuration) {
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on the item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
@@ -42556,7 +42165,7 @@ export const ItemsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItems(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getItems(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ItemsApiAxiosParamCreator(configuration).getItems(uId, userId, maxOfficialRating, hasThemeSong, hasThemeVideo, hasSubtitles, hasSpecialFeature, hasTrailer, adjacentTo, parentIndexNumber, hasParentalRating, isHd, is4K, locationTypes, excludeLocationTypes, isMissing, isUnaired, minCommunityRating, minCriticRating, minPremiereDate, minDateLastSaved, minDateLastSavedForUser, maxPremiereDate, hasOverview, hasImdbId, hasTmdbId, hasTvdbId, excludeItemIds, startIndex, limit, recursive, searchTerm, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, imageTypes, sortBy, isPlayed, genres, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, artists, excludeArtistIds, artistIds, albumArtistIds, contributingArtistIds, albums, albumIds, ids, videoTypes, minOfficialRating, isLocked, isPlaceHolder, hasOfficialRating, collapseBoxSetItems, minWidth, minHeight, maxWidth, maxHeight, is3D, seriesStatus, nameStartsWithOrGreater, nameStartsWith, nameLessThan, studioIds, genreIds, enableTotalRecordCount, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -42600,7 +42209,7 @@ export const ItemsApiFp = function(configuration?: Configuration) {
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on the item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
@@ -42650,7 +42259,7 @@ export const ItemsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItems2(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getItems2(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ItemsApiAxiosParamCreator(configuration).getItems2(uId, userId, maxOfficialRating, hasThemeSong, hasThemeVideo, hasSubtitles, hasSpecialFeature, hasTrailer, adjacentTo, parentIndexNumber, hasParentalRating, isHd, is4K, locationTypes, excludeLocationTypes, isMissing, isUnaired, minCommunityRating, minCriticRating, minPremiereDate, minDateLastSaved, minDateLastSavedForUser, maxPremiereDate, hasOverview, hasImdbId, hasTmdbId, hasTvdbId, excludeItemIds, startIndex, limit, recursive, searchTerm, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, imageTypes, sortBy, isPlayed, genres, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, artists, excludeArtistIds, artistIds, albumArtistIds, contributingArtistIds, albums, albumIds, ids, videoTypes, minOfficialRating, isLocked, isPlaceHolder, hasOfficialRating, collapseBoxSetItems, minWidth, minHeight, maxWidth, maxHeight, is3D, seriesStatus, nameStartsWithOrGreater, nameStartsWith, nameLessThan, studioIds, genreIds, enableTotalRecordCount, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -42665,7 +42274,7 @@ export const ItemsApiFp = function(configuration?: Configuration) {
          * @param {number} [limit] The item limit.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -42677,7 +42286,7 @@ export const ItemsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getResumeItems(userId: string, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, mediaTypes?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludeItemTypes?: string, includeItemTypes?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getResumeItems(userId: string, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, mediaTypes?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludeItemTypes?: string, includeItemTypes?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ItemsApiAxiosParamCreator(configuration).getResumeItems(userId, startIndex, limit, searchTerm, parentId, fields, mediaTypes, enableUserData, imageTypeLimit, enableImageTypes, excludeItemTypes, includeItemTypes, enableTotalRecordCount, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -42730,7 +42339,7 @@ export const ItemsApiFactory = function (configuration?: Configuration, basePath
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on the item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
@@ -42780,7 +42389,7 @@ export const ItemsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getItems(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ItemsApiFp(configuration).getItems(uId, userId, maxOfficialRating, hasThemeSong, hasThemeVideo, hasSubtitles, hasSpecialFeature, hasTrailer, adjacentTo, parentIndexNumber, hasParentalRating, isHd, is4K, locationTypes, excludeLocationTypes, isMissing, isUnaired, minCommunityRating, minCriticRating, minPremiereDate, minDateLastSaved, minDateLastSavedForUser, maxPremiereDate, hasOverview, hasImdbId, hasTmdbId, hasTvdbId, excludeItemIds, startIndex, limit, recursive, searchTerm, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, imageTypes, sortBy, isPlayed, genres, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, artists, excludeArtistIds, artistIds, albumArtistIds, contributingArtistIds, albums, albumIds, ids, videoTypes, minOfficialRating, isLocked, isPlaceHolder, hasOfficialRating, collapseBoxSetItems, minWidth, minHeight, maxWidth, maxHeight, is3D, seriesStatus, nameStartsWithOrGreater, nameStartsWith, nameLessThan, studioIds, genreIds, enableTotalRecordCount, enableImages, options).then((request) => request(axios, basePath));
         },
         /**
@@ -42820,7 +42429,7 @@ export const ItemsApiFactory = function (configuration?: Configuration, basePath
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on the item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
@@ -42870,7 +42479,7 @@ export const ItemsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems2(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getItems2(uId: string, userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ItemsApiFp(configuration).getItems2(uId, userId, maxOfficialRating, hasThemeSong, hasThemeVideo, hasSubtitles, hasSpecialFeature, hasTrailer, adjacentTo, parentIndexNumber, hasParentalRating, isHd, is4K, locationTypes, excludeLocationTypes, isMissing, isUnaired, minCommunityRating, minCriticRating, minPremiereDate, minDateLastSaved, minDateLastSavedForUser, maxPremiereDate, hasOverview, hasImdbId, hasTmdbId, hasTvdbId, excludeItemIds, startIndex, limit, recursive, searchTerm, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, imageTypes, sortBy, isPlayed, genres, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, artists, excludeArtistIds, artistIds, albumArtistIds, contributingArtistIds, albums, albumIds, ids, videoTypes, minOfficialRating, isLocked, isPlaceHolder, hasOfficialRating, collapseBoxSetItems, minWidth, minHeight, maxWidth, maxHeight, is3D, seriesStatus, nameStartsWithOrGreater, nameStartsWith, nameLessThan, studioIds, genreIds, enableTotalRecordCount, enableImages, options).then((request) => request(axios, basePath));
         },
         /**
@@ -42881,7 +42490,7 @@ export const ItemsApiFactory = function (configuration?: Configuration, basePath
          * @param {number} [limit] The item limit.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -42893,7 +42502,7 @@ export const ItemsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getResumeItems(userId: string, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, mediaTypes?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludeItemTypes?: string, includeItemTypes?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getResumeItems(userId: string, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, mediaTypes?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludeItemTypes?: string, includeItemTypes?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ItemsApiFp(configuration).getResumeItems(userId, startIndex, limit, searchTerm, parentId, fields, mediaTypes, enableUserData, imageTypeLimit, enableImageTypes, excludeItemTypes, includeItemTypes, enableTotalRecordCount, enableImages, options).then((request) => request(axios, basePath));
         },
     };
@@ -43145,10 +42754,10 @@ export interface ItemsApiGetItemsRequest {
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof ItemsApiGetItems
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
@@ -43719,10 +43328,10 @@ export interface ItemsApiGetItems2Request {
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof ItemsApiGetItems2
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
@@ -44090,10 +43699,10 @@ export interface ItemsApiGetResumeItemsRequest {
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof ItemsApiGetResumeItems
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Filter by MediaType. Allows multiple, comma delimited.
@@ -44715,14 +44324,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarAlbums2: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options: any = {}): Promise<RequestArgs> => {
+        getSimilarItems: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
-                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarAlbums2.');
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems.');
             }
             const localVarPath = `/Albums/{itemId}/Similar`
                 .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
@@ -44756,7 +44365,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -44785,14 +44394,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarArtists2: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options: any = {}): Promise<RequestArgs> => {
+        getSimilarItems_1: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
-                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarArtists2.');
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems_1.');
             }
             const localVarPath = `/Artists/{itemId}/Similar`
                 .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
@@ -44826,7 +44435,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -44855,14 +44464,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarItems: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options: any = {}): Promise<RequestArgs> => {
+        getSimilarItems_2: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
-                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems.');
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems_2.');
             }
             const localVarPath = `/Items/{itemId}/Similar`
                 .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
@@ -44896,7 +44505,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -44925,14 +44534,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarMovies2: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options: any = {}): Promise<RequestArgs> => {
+        getSimilarItems_3: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
-                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarMovies2.');
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems_3.');
             }
             const localVarPath = `/Movies/{itemId}/Similar`
                 .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
@@ -44966,7 +44575,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -44995,14 +44604,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarShows2: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options: any = {}): Promise<RequestArgs> => {
+        getSimilarItems_4: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
-                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarShows2.');
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems_4.');
             }
             const localVarPath = `/Shows/{itemId}/Similar`
                 .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
@@ -45036,7 +44645,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -45065,14 +44674,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarTrailers2: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options: any = {}): Promise<RequestArgs> => {
+        getSimilarItems_5: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
-                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarTrailers2.');
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems_5.');
             }
             const localVarPath = `/Trailers/{itemId}/Similar`
                 .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
@@ -45106,7 +44715,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -45769,47 +45378,11 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarAlbums2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarAlbums2(itemId, excludeArtistIds, userId, limit, fields, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @summary Gets similar items.
-         * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getSimilarArtists2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarArtists2(itemId, excludeArtistIds, userId, limit, fields, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @summary Gets similar items.
-         * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getSimilarItems(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSimilarItems(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarItems(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -45823,12 +45396,12 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarMovies2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarMovies2(itemId, excludeArtistIds, userId, limit, fields, options);
+        async getSimilarItems_1(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarItems_1(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -45841,12 +45414,12 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarShows2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarShows2(itemId, excludeArtistIds, userId, limit, fields, options);
+        async getSimilarItems_2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarItems_2(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -45859,12 +45432,48 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarTrailers2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarTrailers2(itemId, excludeArtistIds, userId, limit, fields, options);
+        async getSimilarItems_3(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarItems_3(itemId, excludeArtistIds, userId, limit, fields, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Gets similar items.
+         * @param {string} itemId The item id.
+         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {string} [userId] Optional. Filter by user id, and attach user data.
+         * @param {number} [limit] Optional. The maximum number of records to return.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSimilarItems_4(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarItems_4(itemId, excludeArtistIds, userId, limit, fields, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Gets similar items.
+         * @param {string} itemId The item id.
+         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {string} [userId] Optional. Filter by user id, and attach user data.
+         * @param {number} [limit] Optional. The maximum number of records to return.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSimilarItems_5(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarItems_5(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -46121,39 +45730,11 @@ export const LibraryApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarAlbums2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return LibraryApiFp(configuration).getSimilarAlbums2(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Gets similar items.
-         * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSimilarArtists2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return LibraryApiFp(configuration).getSimilarArtists2(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Gets similar items.
-         * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
-         * @param {string} [userId] Optional. Filter by user id, and attach user data.
-         * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSimilarItems(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSimilarItems(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LibraryApiFp(configuration).getSimilarItems(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
@@ -46163,12 +45744,12 @@ export const LibraryApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarMovies2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return LibraryApiFp(configuration).getSimilarMovies2(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
+        getSimilarItems_1(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return LibraryApiFp(configuration).getSimilarItems_1(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -46177,12 +45758,12 @@ export const LibraryApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarShows2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return LibraryApiFp(configuration).getSimilarShows2(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
+        getSimilarItems_2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return LibraryApiFp(configuration).getSimilarItems_2(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -46191,12 +45772,40 @@ export const LibraryApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarTrailers2(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return LibraryApiFp(configuration).getSimilarTrailers2(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
+        getSimilarItems_3(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return LibraryApiFp(configuration).getSimilarItems_3(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Gets similar items.
+         * @param {string} itemId The item id.
+         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {string} [userId] Optional. Filter by user id, and attach user data.
+         * @param {number} [limit] Optional. The maximum number of records to return.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSimilarItems_4(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return LibraryApiFp(configuration).getSimilarItems_4(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Gets similar items.
+         * @param {string} itemId The item id.
+         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {string} [userId] Optional. Filter by user id, and attach user data.
+         * @param {number} [limit] Optional. The maximum number of records to return.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSimilarItems_5(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return LibraryApiFp(configuration).getSimilarItems_5(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -46446,90 +46055,6 @@ export interface LibraryApiGetMediaFoldersRequest {
 }
 
 /**
- * Request parameters for getSimilarAlbums2 operation in LibraryApi.
- * @export
- * @interface LibraryApiGetSimilarAlbums2Request
- */
-export interface LibraryApiGetSimilarAlbums2Request {
-    /**
-     * The item id.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarAlbums2
-     */
-    readonly itemId: string
-
-    /**
-     * Exclude artist ids.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarAlbums2
-     */
-    readonly excludeArtistIds?: string
-
-    /**
-     * Optional. Filter by user id, and attach user data.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarAlbums2
-     */
-    readonly userId?: string
-
-    /**
-     * Optional. The maximum number of records to return.
-     * @type {number}
-     * @memberof LibraryApiGetSimilarAlbums2
-     */
-    readonly limit?: number
-
-    /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarAlbums2
-     */
-    readonly fields?: string
-}
-
-/**
- * Request parameters for getSimilarArtists2 operation in LibraryApi.
- * @export
- * @interface LibraryApiGetSimilarArtists2Request
- */
-export interface LibraryApiGetSimilarArtists2Request {
-    /**
-     * The item id.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarArtists2
-     */
-    readonly itemId: string
-
-    /**
-     * Exclude artist ids.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarArtists2
-     */
-    readonly excludeArtistIds?: string
-
-    /**
-     * Optional. Filter by user id, and attach user data.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarArtists2
-     */
-    readonly userId?: string
-
-    /**
-     * Optional. The maximum number of records to return.
-     * @type {number}
-     * @memberof LibraryApiGetSimilarArtists2
-     */
-    readonly limit?: number
-
-    /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarArtists2
-     */
-    readonly fields?: string
-}
-
-/**
  * Request parameters for getSimilarItems operation in LibraryApi.
  * @export
  * @interface LibraryApiGetSimilarItemsRequest
@@ -46565,136 +46090,220 @@ export interface LibraryApiGetSimilarItemsRequest {
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof LibraryApiGetSimilarItems
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 }
 
 /**
- * Request parameters for getSimilarMovies2 operation in LibraryApi.
+ * Request parameters for getSimilarItems_1 operation in LibraryApi.
  * @export
- * @interface LibraryApiGetSimilarMovies2Request
+ * @interface LibraryApiGetSimilarItems0Request
  */
-export interface LibraryApiGetSimilarMovies2Request {
+export interface LibraryApiGetSimilarItems0Request {
     /**
      * The item id.
      * @type {string}
-     * @memberof LibraryApiGetSimilarMovies2
+     * @memberof LibraryApiGetSimilarItems0
      */
     readonly itemId: string
 
     /**
      * Exclude artist ids.
      * @type {string}
-     * @memberof LibraryApiGetSimilarMovies2
+     * @memberof LibraryApiGetSimilarItems0
      */
     readonly excludeArtistIds?: string
 
     /**
      * Optional. Filter by user id, and attach user data.
      * @type {string}
-     * @memberof LibraryApiGetSimilarMovies2
+     * @memberof LibraryApiGetSimilarItems0
      */
     readonly userId?: string
 
     /**
      * Optional. The maximum number of records to return.
      * @type {number}
-     * @memberof LibraryApiGetSimilarMovies2
+     * @memberof LibraryApiGetSimilarItems0
      */
     readonly limit?: number
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarMovies2
+     * @type {Array<ItemFields>}
+     * @memberof LibraryApiGetSimilarItems0
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 }
 
 /**
- * Request parameters for getSimilarShows2 operation in LibraryApi.
+ * Request parameters for getSimilarItems_2 operation in LibraryApi.
  * @export
- * @interface LibraryApiGetSimilarShows2Request
+ * @interface LibraryApiGetSimilarItems1Request
  */
-export interface LibraryApiGetSimilarShows2Request {
+export interface LibraryApiGetSimilarItems1Request {
     /**
      * The item id.
      * @type {string}
-     * @memberof LibraryApiGetSimilarShows2
+     * @memberof LibraryApiGetSimilarItems1
      */
     readonly itemId: string
 
     /**
      * Exclude artist ids.
      * @type {string}
-     * @memberof LibraryApiGetSimilarShows2
+     * @memberof LibraryApiGetSimilarItems1
      */
     readonly excludeArtistIds?: string
 
     /**
      * Optional. Filter by user id, and attach user data.
      * @type {string}
-     * @memberof LibraryApiGetSimilarShows2
+     * @memberof LibraryApiGetSimilarItems1
      */
     readonly userId?: string
 
     /**
      * Optional. The maximum number of records to return.
      * @type {number}
-     * @memberof LibraryApiGetSimilarShows2
+     * @memberof LibraryApiGetSimilarItems1
      */
     readonly limit?: number
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarShows2
+     * @type {Array<ItemFields>}
+     * @memberof LibraryApiGetSimilarItems1
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 }
 
 /**
- * Request parameters for getSimilarTrailers2 operation in LibraryApi.
+ * Request parameters for getSimilarItems_3 operation in LibraryApi.
  * @export
- * @interface LibraryApiGetSimilarTrailers2Request
+ * @interface LibraryApiGetSimilarItems2Request
  */
-export interface LibraryApiGetSimilarTrailers2Request {
+export interface LibraryApiGetSimilarItems2Request {
     /**
      * The item id.
      * @type {string}
-     * @memberof LibraryApiGetSimilarTrailers2
+     * @memberof LibraryApiGetSimilarItems2
      */
     readonly itemId: string
 
     /**
      * Exclude artist ids.
      * @type {string}
-     * @memberof LibraryApiGetSimilarTrailers2
+     * @memberof LibraryApiGetSimilarItems2
      */
     readonly excludeArtistIds?: string
 
     /**
      * Optional. Filter by user id, and attach user data.
      * @type {string}
-     * @memberof LibraryApiGetSimilarTrailers2
+     * @memberof LibraryApiGetSimilarItems2
      */
     readonly userId?: string
 
     /**
      * Optional. The maximum number of records to return.
      * @type {number}
-     * @memberof LibraryApiGetSimilarTrailers2
+     * @memberof LibraryApiGetSimilarItems2
      */
     readonly limit?: number
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
-     * @memberof LibraryApiGetSimilarTrailers2
+     * @type {Array<ItemFields>}
+     * @memberof LibraryApiGetSimilarItems2
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
+}
+
+/**
+ * Request parameters for getSimilarItems_4 operation in LibraryApi.
+ * @export
+ * @interface LibraryApiGetSimilarItems3Request
+ */
+export interface LibraryApiGetSimilarItems3Request {
+    /**
+     * The item id.
+     * @type {string}
+     * @memberof LibraryApiGetSimilarItems3
+     */
+    readonly itemId: string
+
+    /**
+     * Exclude artist ids.
+     * @type {string}
+     * @memberof LibraryApiGetSimilarItems3
+     */
+    readonly excludeArtistIds?: string
+
+    /**
+     * Optional. Filter by user id, and attach user data.
+     * @type {string}
+     * @memberof LibraryApiGetSimilarItems3
+     */
+    readonly userId?: string
+
+    /**
+     * Optional. The maximum number of records to return.
+     * @type {number}
+     * @memberof LibraryApiGetSimilarItems3
+     */
+    readonly limit?: number
+
+    /**
+     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+     * @type {Array<ItemFields>}
+     * @memberof LibraryApiGetSimilarItems3
+     */
+    readonly fields?: Array<ItemFields>
+}
+
+/**
+ * Request parameters for getSimilarItems_5 operation in LibraryApi.
+ * @export
+ * @interface LibraryApiGetSimilarItems4Request
+ */
+export interface LibraryApiGetSimilarItems4Request {
+    /**
+     * The item id.
+     * @type {string}
+     * @memberof LibraryApiGetSimilarItems4
+     */
+    readonly itemId: string
+
+    /**
+     * Exclude artist ids.
+     * @type {string}
+     * @memberof LibraryApiGetSimilarItems4
+     */
+    readonly excludeArtistIds?: string
+
+    /**
+     * Optional. Filter by user id, and attach user data.
+     * @type {string}
+     * @memberof LibraryApiGetSimilarItems4
+     */
+    readonly userId?: string
+
+    /**
+     * Optional. The maximum number of records to return.
+     * @type {number}
+     * @memberof LibraryApiGetSimilarItems4
+     */
+    readonly limit?: number
+
+    /**
+     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+     * @type {Array<ItemFields>}
+     * @memberof LibraryApiGetSimilarItems4
+     */
+    readonly fields?: Array<ItemFields>
 }
 
 /**
@@ -46994,30 +46603,6 @@ export class LibraryApi extends BaseAPI {
     /**
      * 
      * @summary Gets similar items.
-     * @param {LibraryApiGetSimilarAlbums2Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LibraryApi
-     */
-    public getSimilarAlbums2(requestParameters: LibraryApiGetSimilarAlbums2Request, options?: any) {
-        return LibraryApiFp(this.configuration).getSimilarAlbums2(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Gets similar items.
-     * @param {LibraryApiGetSimilarArtists2Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LibraryApi
-     */
-    public getSimilarArtists2(requestParameters: LibraryApiGetSimilarArtists2Request, options?: any) {
-        return LibraryApiFp(this.configuration).getSimilarArtists2(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Gets similar items.
      * @param {LibraryApiGetSimilarItemsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -47030,37 +46615,61 @@ export class LibraryApi extends BaseAPI {
     /**
      * 
      * @summary Gets similar items.
-     * @param {LibraryApiGetSimilarMovies2Request} requestParameters Request parameters.
+     * @param {LibraryApiGetSimilarItems0Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LibraryApi
      */
-    public getSimilarMovies2(requestParameters: LibraryApiGetSimilarMovies2Request, options?: any) {
-        return LibraryApiFp(this.configuration).getSimilarMovies2(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
+    public getSimilarItems_1(requestParameters: LibraryApiGetSimilarItems0Request, options?: any) {
+        return LibraryApiFp(this.configuration).getSimilarItems_1(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Gets similar items.
-     * @param {LibraryApiGetSimilarShows2Request} requestParameters Request parameters.
+     * @param {LibraryApiGetSimilarItems1Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LibraryApi
      */
-    public getSimilarShows2(requestParameters: LibraryApiGetSimilarShows2Request, options?: any) {
-        return LibraryApiFp(this.configuration).getSimilarShows2(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
+    public getSimilarItems_2(requestParameters: LibraryApiGetSimilarItems1Request, options?: any) {
+        return LibraryApiFp(this.configuration).getSimilarItems_2(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Gets similar items.
-     * @param {LibraryApiGetSimilarTrailers2Request} requestParameters Request parameters.
+     * @param {LibraryApiGetSimilarItems2Request} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LibraryApi
      */
-    public getSimilarTrailers2(requestParameters: LibraryApiGetSimilarTrailers2Request, options?: any) {
-        return LibraryApiFp(this.configuration).getSimilarTrailers2(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
+    public getSimilarItems_3(requestParameters: LibraryApiGetSimilarItems2Request, options?: any) {
+        return LibraryApiFp(this.configuration).getSimilarItems_3(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Gets similar items.
+     * @param {LibraryApiGetSimilarItems3Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LibraryApi
+     */
+    public getSimilarItems_4(requestParameters: LibraryApiGetSimilarItems3Request, options?: any) {
+        return LibraryApiFp(this.configuration).getSimilarItems_4(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Gets similar items.
+     * @param {LibraryApiGetSimilarItems4Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LibraryApi
+     */
+    public getSimilarItems_5(requestParameters: LibraryApiGetSimilarItems4Request, options?: any) {
+        return LibraryApiFp(this.configuration).getSimilarItems_5(requestParameters.itemId, requestParameters.excludeArtistIds, requestParameters.userId, requestParameters.limit, requestParameters.fields, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -49079,7 +48688,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] \&quot;Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {string} [sortBy] Optional. Key to sort by.
          * @param {SortOrder} [sortOrder] Optional. Sort order.
@@ -49088,7 +48697,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvChannels: async (type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getLiveTvChannels: async (type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -49168,7 +48777,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -49282,12 +48891,12 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {string} [seriesTimerId] Optional. Filter by series timer id.
          * @param {string} [librarySeriesId] Optional. Filter by library series id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvPrograms: async (channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: string, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getLiveTvPrograms: async (channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Programs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -49415,7 +49024,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['librarySeriesId'] = librarySeriesId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -49561,13 +49170,13 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [genreIds] The genres to return guide information for.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. include user data.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecommendedPrograms: async (userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: string, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getRecommendedPrograms: async (userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Programs/Recommended`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -49639,7 +49248,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['genreIds'] = genreIds;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -49885,7 +49494,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {boolean} [isMovie] Optional. Filter for movies.
          * @param {boolean} [isSeries] Optional. Filter for series.
@@ -49897,7 +49506,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecordings: async (channelId?: string, userId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, isMovie?: boolean, isSeries?: boolean, isKids?: boolean, isSports?: boolean, isNews?: boolean, isLibraryItem?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getRecordings: async (channelId?: string, userId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, isMovie?: boolean, isSeries?: boolean, isKids?: boolean, isSports?: boolean, isNews?: boolean, isLibraryItem?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Recordings`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -49957,7 +49566,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -50025,13 +49634,13 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {boolean} [enableTotalRecordCount] Optional. Return total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecordingsSeries: async (channelId?: string, userId?: string, groupId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getRecordingsSeries: async (channelId?: string, userId?: string, groupId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Recordings/Series`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -50095,7 +49704,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -50935,7 +50544,7 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] \&quot;Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {string} [sortBy] Optional. Key to sort by.
          * @param {SortOrder} [sortOrder] Optional. Sort order.
@@ -50944,7 +50553,7 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getLiveTvChannels(type, userId, startIndex, isMovie, isSeries, isNews, isKids, isSports, limit, isFavorite, isLiked, isDisliked, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, sortBy, sortOrder, enableFavoriteSorting, addCurrentProgram, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -50992,12 +50601,12 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {string} [seriesTimerId] Optional. Filter by series timer id.
          * @param {string} [librarySeriesId] Optional. Filter by library series id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLiveTvPrograms(channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: string, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getLiveTvPrograms(channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getLiveTvPrograms(channelIds, userId, minStartDate, hasAired, isAiring, maxStartDate, minEndDate, maxEndDate, isMovie, isSeries, isNews, isKids, isSports, startIndex, limit, sortBy, sortOrder, genres, genreIds, enableImages, imageTypeLimit, enableImageTypes, enableUserData, seriesTimerId, librarySeriesId, fields, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -51049,13 +50658,13 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [genreIds] The genres to return guide information for.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. include user data.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: string, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getRecommendedPrograms(userId, limit, isAiring, hasAired, isSeries, isMovie, isNews, isKids, isSports, enableImages, imageTypeLimit, enableImageTypes, genreIds, fields, enableUserData, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -51132,7 +50741,7 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {boolean} [isMovie] Optional. Filter for movies.
          * @param {boolean} [isSeries] Optional. Filter for series.
@@ -51144,7 +50753,7 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecordings(channelId?: string, userId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, isMovie?: boolean, isSeries?: boolean, isKids?: boolean, isSports?: boolean, isNews?: boolean, isLibraryItem?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getRecordings(channelId?: string, userId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, isMovie?: boolean, isSeries?: boolean, isKids?: boolean, isSports?: boolean, isNews?: boolean, isLibraryItem?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getRecordings(channelId, userId, startIndex, limit, status, isInProgress, seriesTimerId, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, isMovie, isSeries, isKids, isSports, isNews, isLibraryItem, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -51165,13 +50774,13 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {boolean} [enableTotalRecordCount] Optional. Return total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecordingsSeries(channelId?: string, userId?: string, groupId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getRecordingsSeries(channelId?: string, userId?: string, groupId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getRecordingsSeries(channelId, userId, groupId, startIndex, limit, status, isInProgress, seriesTimerId, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -51537,7 +51146,7 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] \&quot;Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {string} [sortBy] Optional. Key to sort by.
          * @param {SortOrder} [sortOrder] Optional. Sort order.
@@ -51546,7 +51155,7 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getLiveTvChannels(type, userId, startIndex, isMovie, isSeries, isNews, isKids, isSports, limit, isFavorite, isLiked, isDisliked, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, sortBy, sortOrder, enableFavoriteSorting, addCurrentProgram, options).then((request) => request(axios, basePath));
         },
         /**
@@ -51586,12 +51195,12 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {string} [seriesTimerId] Optional. Filter by series timer id.
          * @param {string} [librarySeriesId] Optional. Filter by library series id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvPrograms(channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: string, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getLiveTvPrograms(channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getLiveTvPrograms(channelIds, userId, minStartDate, hasAired, isAiring, maxStartDate, minEndDate, maxEndDate, isMovie, isSeries, isNews, isKids, isSports, startIndex, limit, sortBy, sortOrder, genres, genreIds, enableImages, imageTypeLimit, enableImageTypes, enableUserData, seriesTimerId, librarySeriesId, fields, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -51631,13 +51240,13 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [genreIds] The genres to return guide information for.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. include user data.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: string, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getRecommendedPrograms(userId, limit, isAiring, hasAired, isSeries, isMovie, isNews, isKids, isSports, enableImages, imageTypeLimit, enableImageTypes, genreIds, fields, enableUserData, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -51694,7 +51303,7 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {boolean} [isMovie] Optional. Filter for movies.
          * @param {boolean} [isSeries] Optional. Filter for series.
@@ -51706,7 +51315,7 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecordings(channelId?: string, userId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, isMovie?: boolean, isSeries?: boolean, isKids?: boolean, isSports?: boolean, isNews?: boolean, isLibraryItem?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getRecordings(channelId?: string, userId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, isMovie?: boolean, isSeries?: boolean, isKids?: boolean, isSports?: boolean, isNews?: boolean, isLibraryItem?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getRecordings(channelId, userId, startIndex, limit, status, isInProgress, seriesTimerId, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, isMovie, isSeries, isKids, isSports, isNews, isLibraryItem, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -51723,13 +51332,13 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {boolean} [enableTotalRecordCount] Optional. Return total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecordingsSeries(channelId?: string, userId?: string, groupId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: string, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getRecordingsSeries(channelId?: string, userId?: string, groupId?: string, startIndex?: number, limit?: number, status?: RecordingStatus, isInProgress?: boolean, seriesTimerId?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getRecordingsSeries(channelId, userId, groupId, startIndex, limit, status, isInProgress, seriesTimerId, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -52233,11 +51842,11 @@ export interface LiveTvApiGetLiveTvChannelsRequest {
     readonly enableImageTypes?: Array<ImageType>
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof LiveTvApiGetLiveTvChannels
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include user data.
@@ -52457,11 +52066,11 @@ export interface LiveTvApiGetLiveTvProgramsRequest {
     readonly librarySeriesId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof LiveTvApiGetLiveTvPrograms
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Retrieve total record count.
@@ -52604,11 +52213,11 @@ export interface LiveTvApiGetRecommendedProgramsRequest {
     readonly genreIds?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof LiveTvApiGetRecommendedPrograms
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. include user data.
@@ -52765,11 +52374,11 @@ export interface LiveTvApiGetRecordingsRequest {
     readonly enableImageTypes?: Array<ImageType>
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof LiveTvApiGetRecordings
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include user data.
@@ -52912,11 +52521,11 @@ export interface LiveTvApiGetRecordingsSeriesRequest {
     readonly enableImageTypes?: Array<ImageType>
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof LiveTvApiGetRecordingsSeries
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include user data.
@@ -54859,13 +54468,13 @@ export const MoviesApiAxiosParamCreator = function (configuration?: Configuratio
          * @summary Gets movie recommendations.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. The fields to return.
+         * @param {Array<ItemFields>} [fields] Optional. The fields to return.
          * @param {number} [categoryLimit] The max number of categories to return.
          * @param {number} [itemLimit] The max number of items to return per category.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMovieRecommendations: async (userId?: string, parentId?: string, fields?: string, categoryLimit?: number, itemLimit?: number, options: any = {}): Promise<RequestArgs> => {
+        getMovieRecommendations: async (userId?: string, parentId?: string, fields?: Array<ItemFields>, categoryLimit?: number, itemLimit?: number, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Movies/Recommendations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -54893,7 +54502,7 @@ export const MoviesApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -54937,13 +54546,13 @@ export const MoviesApiFp = function(configuration?: Configuration) {
          * @summary Gets movie recommendations.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. The fields to return.
+         * @param {Array<ItemFields>} [fields] Optional. The fields to return.
          * @param {number} [categoryLimit] The max number of categories to return.
          * @param {number} [itemLimit] The max number of items to return per category.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMovieRecommendations(userId?: string, parentId?: string, fields?: string, categoryLimit?: number, itemLimit?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RecommendationDto>>> {
+        async getMovieRecommendations(userId?: string, parentId?: string, fields?: Array<ItemFields>, categoryLimit?: number, itemLimit?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RecommendationDto>>> {
             const localVarAxiosArgs = await MoviesApiAxiosParamCreator(configuration).getMovieRecommendations(userId, parentId, fields, categoryLimit, itemLimit, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -54964,13 +54573,13 @@ export const MoviesApiFactory = function (configuration?: Configuration, basePat
          * @summary Gets movie recommendations.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. The fields to return.
+         * @param {Array<ItemFields>} [fields] Optional. The fields to return.
          * @param {number} [categoryLimit] The max number of categories to return.
          * @param {number} [itemLimit] The max number of items to return per category.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMovieRecommendations(userId?: string, parentId?: string, fields?: string, categoryLimit?: number, itemLimit?: number, options?: any): AxiosPromise<Array<RecommendationDto>> {
+        getMovieRecommendations(userId?: string, parentId?: string, fields?: Array<ItemFields>, categoryLimit?: number, itemLimit?: number, options?: any): AxiosPromise<Array<RecommendationDto>> {
             return MoviesApiFp(configuration).getMovieRecommendations(userId, parentId, fields, categoryLimit, itemLimit, options).then((request) => request(axios, basePath));
         },
     };
@@ -54998,10 +54607,10 @@ export interface MoviesApiGetMovieRecommendationsRequest {
 
     /**
      * Optional. The fields to return.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof MoviesApiGetMovieRecommendations
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * The max number of categories to return.
@@ -55103,30 +54712,16 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Gets all music genres from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-         * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -55136,7 +54731,7 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMusicGenres: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getMusicGenres: async (startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/MusicGenres`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -55156,10 +54751,6 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (minCommunityRating !== undefined) {
-                localVarQueryParameter['minCommunityRating'] = minCommunityRating;
-            }
-
             if (startIndex !== undefined) {
                 localVarQueryParameter['startIndex'] = startIndex;
             }
@@ -55176,7 +54767,7 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -55188,40 +54779,8 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
-            if (filters) {
-                localVarQueryParameter['filters'] = filters;
-            }
-
             if (isFavorite !== undefined) {
                 localVarQueryParameter['isFavorite'] = isFavorite;
-            }
-
-            if (mediaTypes !== undefined) {
-                localVarQueryParameter['mediaTypes'] = mediaTypes;
-            }
-
-            if (genres !== undefined) {
-                localVarQueryParameter['genres'] = genres;
-            }
-
-            if (genreIds !== undefined) {
-                localVarQueryParameter['genreIds'] = genreIds;
-            }
-
-            if (officialRatings !== undefined) {
-                localVarQueryParameter['officialRatings'] = officialRatings;
-            }
-
-            if (tags !== undefined) {
-                localVarQueryParameter['tags'] = tags;
-            }
-
-            if (years !== undefined) {
-                localVarQueryParameter['years'] = years;
-            }
-
-            if (enableUserData !== undefined) {
-                localVarQueryParameter['enableUserData'] = enableUserData;
             }
 
             if (imageTypeLimit !== undefined) {
@@ -55230,26 +54789,6 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
 
             if (enableImageTypes) {
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
-            }
-
-            if (person !== undefined) {
-                localVarQueryParameter['person'] = person;
-            }
-
-            if (personIds !== undefined) {
-                localVarQueryParameter['personIds'] = personIds;
-            }
-
-            if (personTypes !== undefined) {
-                localVarQueryParameter['personTypes'] = personTypes;
-            }
-
-            if (studios !== undefined) {
-                localVarQueryParameter['studios'] = studios;
-            }
-
-            if (studioIds !== undefined) {
-                localVarQueryParameter['studioIds'] = studioIds;
             }
 
             if (userId !== undefined) {
@@ -55321,30 +54860,16 @@ export const MusicGenresApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Gets all music genres from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-         * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -55354,8 +54879,8 @@ export const MusicGenresApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMusicGenres(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await MusicGenresApiAxiosParamCreator(configuration).getMusicGenres(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
+        async getMusicGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await MusicGenresApiAxiosParamCreator(configuration).getMusicGenres(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -55384,30 +54909,16 @@ export const MusicGenresApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary Gets all music genres from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-         * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -55417,8 +54928,8 @@ export const MusicGenresApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMusicGenres(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return MusicGenresApiFp(configuration).getMusicGenres(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
+        getMusicGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return MusicGenresApiFp(configuration).getMusicGenres(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -55451,13 +54962,6 @@ export interface MusicGenresApiGetMusicGenreRequest {
  */
 export interface MusicGenresApiGetMusicGenresRequest {
     /**
-     * Optional filter by minimum community rating.
-     * @type {number}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly minCommunityRating?: number
-
-    /**
      * Optional. The record index to start at. All items with a lower index will be dropped from the results.
      * @type {number}
      * @memberof MusicGenresApiGetMusicGenres
@@ -55486,11 +54990,11 @@ export interface MusicGenresApiGetMusicGenresRequest {
     readonly parentId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof MusicGenresApiGetMusicGenres
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
@@ -55507,67 +55011,11 @@ export interface MusicGenresApiGetMusicGenresRequest {
     readonly includeItemTypes?: string
 
     /**
-     * Optional. Specify additional filters to apply.
-     * @type {Array<ItemFilter>}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly filters?: Array<ItemFilter>
-
-    /**
      * Optional filter by items that are marked as favorite, or not.
      * @type {boolean}
      * @memberof MusicGenresApiGetMusicGenres
      */
     readonly isFavorite?: boolean
-
-    /**
-     * Optional filter by MediaType. Allows multiple, comma delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly mediaTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly genres?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly genreIds?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly officialRatings?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly tags?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly years?: string
-
-    /**
-     * Optional, include user data.
-     * @type {boolean}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly enableUserData?: boolean
 
     /**
      * Optional, the max number of images to return, per image type.
@@ -55582,41 +55030,6 @@ export interface MusicGenresApiGetMusicGenresRequest {
      * @memberof MusicGenresApiGetMusicGenres
      */
     readonly enableImageTypes?: Array<ImageType>
-
-    /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly person?: string
-
-    /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person id.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly personIds?: string
-
-    /**
-     * Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly personTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly studios?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof MusicGenresApiGetMusicGenres
-     */
-    readonly studioIds?: string
 
     /**
      * User id.
@@ -55689,7 +55102,7 @@ export class MusicGenresApi extends BaseAPI {
      * @memberof MusicGenresApi
      */
     public getMusicGenres(requestParameters: MusicGenresApiGetMusicGenresRequest = {}, options?: any) {
-        return MusicGenresApiFp(this.configuration).getMusicGenres(requestParameters.minCommunityRating, requestParameters.startIndex, requestParameters.limit, requestParameters.searchTerm, requestParameters.parentId, requestParameters.fields, requestParameters.excludeItemTypes, requestParameters.includeItemTypes, requestParameters.filters, requestParameters.isFavorite, requestParameters.mediaTypes, requestParameters.genres, requestParameters.genreIds, requestParameters.officialRatings, requestParameters.tags, requestParameters.years, requestParameters.enableUserData, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.person, requestParameters.personIds, requestParameters.personTypes, requestParameters.studios, requestParameters.studioIds, requestParameters.userId, requestParameters.nameStartsWithOrGreater, requestParameters.nameStartsWith, requestParameters.nameLessThan, requestParameters.enableImages, requestParameters.enableTotalRecordCount, options).then((request) => request(this.axios, this.basePath));
+        return MusicGenresApiFp(this.configuration).getMusicGenres(requestParameters.startIndex, requestParameters.limit, requestParameters.searchTerm, requestParameters.parentId, requestParameters.fields, requestParameters.excludeItemTypes, requestParameters.includeItemTypes, requestParameters.isFavorite, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.userId, requestParameters.nameStartsWithOrGreater, requestParameters.nameStartsWith, requestParameters.nameLessThan, requestParameters.enableImages, requestParameters.enableTotalRecordCount, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -57133,41 +56546,24 @@ export const PersonsApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Gets all persons from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
-         * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
+         * @summary Gets all persons.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
-         * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimited. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
-         * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
+         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
+         * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not. userId is required.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {string} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {string} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {string} [appearsInItemId] Optional. If specified, person results will be filtered on items related to said persons.
          * @param {string} [userId] User id.
-         * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
-         * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
-         * @param {string} [nameLessThan] Optional filter by items whose name is equally or lesser than a given input string.
          * @param {boolean} [enableImages] Optional, include image information in output.
-         * @param {boolean} [enableTotalRecordCount] Optional. Include total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPersons: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getPersons: async (limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: string, personTypes?: string, appearsInItemId?: string, userId?: string, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Persons`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -57187,14 +56583,6 @@ export const PersonsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (minCommunityRating !== undefined) {
-                localVarQueryParameter['minCommunityRating'] = minCommunityRating;
-            }
-
-            if (startIndex !== undefined) {
-                localVarQueryParameter['startIndex'] = startIndex;
-            }
-
             if (limit !== undefined) {
                 localVarQueryParameter['limit'] = limit;
             }
@@ -57203,20 +56591,8 @@ export const PersonsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['searchTerm'] = searchTerm;
             }
 
-            if (parentId !== undefined) {
-                localVarQueryParameter['parentId'] = parentId;
-            }
-
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
-            }
-
-            if (excludeItemTypes !== undefined) {
-                localVarQueryParameter['excludeItemTypes'] = excludeItemTypes;
-            }
-
-            if (includeItemTypes !== undefined) {
-                localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
             if (filters) {
@@ -57225,30 +56601,6 @@ export const PersonsApiAxiosParamCreator = function (configuration?: Configurati
 
             if (isFavorite !== undefined) {
                 localVarQueryParameter['isFavorite'] = isFavorite;
-            }
-
-            if (mediaTypes !== undefined) {
-                localVarQueryParameter['mediaTypes'] = mediaTypes;
-            }
-
-            if (genres !== undefined) {
-                localVarQueryParameter['genres'] = genres;
-            }
-
-            if (genreIds !== undefined) {
-                localVarQueryParameter['genreIds'] = genreIds;
-            }
-
-            if (officialRatings !== undefined) {
-                localVarQueryParameter['officialRatings'] = officialRatings;
-            }
-
-            if (tags !== undefined) {
-                localVarQueryParameter['tags'] = tags;
-            }
-
-            if (years !== undefined) {
-                localVarQueryParameter['years'] = years;
             }
 
             if (enableUserData !== undefined) {
@@ -57263,48 +56615,24 @@ export const PersonsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
             }
 
-            if (person !== undefined) {
-                localVarQueryParameter['person'] = person;
-            }
-
-            if (personIds !== undefined) {
-                localVarQueryParameter['personIds'] = personIds;
+            if (excludePersonTypes !== undefined) {
+                localVarQueryParameter['excludePersonTypes'] = excludePersonTypes;
             }
 
             if (personTypes !== undefined) {
                 localVarQueryParameter['personTypes'] = personTypes;
             }
 
-            if (studios !== undefined) {
-                localVarQueryParameter['studios'] = studios;
-            }
-
-            if (studioIds !== undefined) {
-                localVarQueryParameter['studioIds'] = studioIds;
+            if (appearsInItemId !== undefined) {
+                localVarQueryParameter['appearsInItemId'] = appearsInItemId;
             }
 
             if (userId !== undefined) {
                 localVarQueryParameter['userId'] = userId;
             }
 
-            if (nameStartsWithOrGreater !== undefined) {
-                localVarQueryParameter['nameStartsWithOrGreater'] = nameStartsWithOrGreater;
-            }
-
-            if (nameStartsWith !== undefined) {
-                localVarQueryParameter['nameStartsWith'] = nameStartsWith;
-            }
-
-            if (nameLessThan !== undefined) {
-                localVarQueryParameter['nameLessThan'] = nameLessThan;
-            }
-
             if (enableImages !== undefined) {
                 localVarQueryParameter['enableImages'] = enableImages;
-            }
-
-            if (enableTotalRecordCount !== undefined) {
-                localVarQueryParameter['enableTotalRecordCount'] = enableTotalRecordCount;
             }
 
 
@@ -57351,42 +56679,25 @@ export const PersonsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Gets all persons from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
-         * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
+         * @summary Gets all persons.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
-         * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimited. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
-         * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
+         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
+         * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not. userId is required.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {string} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {string} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {string} [appearsInItemId] Optional. If specified, person results will be filtered on items related to said persons.
          * @param {string} [userId] User id.
-         * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
-         * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
-         * @param {string} [nameLessThan] Optional filter by items whose name is equally or lesser than a given input string.
          * @param {boolean} [enableImages] Optional, include image information in output.
-         * @param {boolean} [enableTotalRecordCount] Optional. Include total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPersons(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await PersonsApiAxiosParamCreator(configuration).getPersons(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
+        async getPersons(limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: string, personTypes?: string, appearsInItemId?: string, userId?: string, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await PersonsApiAxiosParamCreator(configuration).getPersons(limit, searchTerm, fields, filters, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, excludePersonTypes, personTypes, appearsInItemId, userId, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -57414,42 +56725,25 @@ export const PersonsApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Gets all persons from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
-         * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
+         * @summary Gets all persons.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] The search term.
-         * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimited. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
-         * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
+         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
+         * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not. userId is required.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person id.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {string} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {string} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {string} [appearsInItemId] Optional. If specified, person results will be filtered on items related to said persons.
          * @param {string} [userId] User id.
-         * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
-         * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
-         * @param {string} [nameLessThan] Optional filter by items whose name is equally or lesser than a given input string.
          * @param {boolean} [enableImages] Optional, include image information in output.
-         * @param {boolean} [enableTotalRecordCount] Optional. Include total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPersons(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return PersonsApiFp(configuration).getPersons(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
+        getPersons(limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: string, personTypes?: string, appearsInItemId?: string, userId?: string, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return PersonsApiFp(configuration).getPersons(limit, searchTerm, fields, filters, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, excludePersonTypes, personTypes, appearsInItemId, userId, enableImages, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -57482,20 +56776,6 @@ export interface PersonsApiGetPersonRequest {
  */
 export interface PersonsApiGetPersonsRequest {
     /**
-     * Optional filter by minimum community rating.
-     * @type {number}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly minCommunityRating?: number
-
-    /**
-     * Optional. The record index to start at. All items with a lower index will be dropped from the results.
-     * @type {number}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly startIndex?: number
-
-    /**
      * Optional. The maximum number of records to return.
      * @type {number}
      * @memberof PersonsApiGetPersons
@@ -57510,88 +56790,25 @@ export interface PersonsApiGetPersonsRequest {
     readonly searchTerm?: string
 
     /**
-     * Specify this to localize the search to a specific item or folder. Omit to use the root.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof PersonsApiGetPersons
      */
-    readonly parentId?: string
+    readonly fields?: Array<ItemFields>
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly fields?: string
-
-    /**
-     * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly excludeItemTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly includeItemTypes?: string
-
-    /**
-     * Optional. Specify additional filters to apply. This allows multiple, comma delimited. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
+     * Optional. Specify additional filters to apply.
      * @type {Array<ItemFilter>}
      * @memberof PersonsApiGetPersons
      */
     readonly filters?: Array<ItemFilter>
 
     /**
-     * Optional filter by items that are marked as favorite, or not.
+     * Optional filter by items that are marked as favorite, or not. userId is required.
      * @type {boolean}
      * @memberof PersonsApiGetPersons
      */
     readonly isFavorite?: boolean
-
-    /**
-     * Optional filter by MediaType. Allows multiple, comma delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly mediaTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly genres?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly genreIds?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly officialRatings?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly tags?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly years?: string
 
     /**
      * Optional, include user data.
@@ -57615,39 +56832,25 @@ export interface PersonsApiGetPersonsRequest {
     readonly enableImageTypes?: Array<ImageType>
 
     /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person.
+     * Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
      * @type {string}
      * @memberof PersonsApiGetPersons
      */
-    readonly person?: string
+    readonly excludePersonTypes?: string
 
     /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person id.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly personIds?: string
-
-    /**
-     * Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
+     * Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
      * @type {string}
      * @memberof PersonsApiGetPersons
      */
     readonly personTypes?: string
 
     /**
-     * Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
+     * Optional. If specified, person results will be filtered on items related to said persons.
      * @type {string}
      * @memberof PersonsApiGetPersons
      */
-    readonly studios?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly studioIds?: string
+    readonly appearsInItemId?: string
 
     /**
      * User id.
@@ -57657,39 +56860,11 @@ export interface PersonsApiGetPersonsRequest {
     readonly userId?: string
 
     /**
-     * Optional filter by items whose name is sorted equally or greater than a given input string.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly nameStartsWithOrGreater?: string
-
-    /**
-     * Optional filter by items whose name is sorted equally than a given input string.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly nameStartsWith?: string
-
-    /**
-     * Optional filter by items whose name is equally or lesser than a given input string.
-     * @type {string}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly nameLessThan?: string
-
-    /**
      * Optional, include image information in output.
      * @type {boolean}
      * @memberof PersonsApiGetPersons
      */
     readonly enableImages?: boolean
-
-    /**
-     * Optional. Include total record count.
-     * @type {boolean}
-     * @memberof PersonsApiGetPersons
-     */
-    readonly enableTotalRecordCount?: boolean
 }
 
 /**
@@ -57713,14 +56888,14 @@ export class PersonsApi extends BaseAPI {
 
     /**
      * 
-     * @summary Gets all persons from a given item, folder, or the entire library.
+     * @summary Gets all persons.
      * @param {PersonsApiGetPersonsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PersonsApi
      */
     public getPersons(requestParameters: PersonsApiGetPersonsRequest = {}, options?: any) {
-        return PersonsApiFp(this.configuration).getPersons(requestParameters.minCommunityRating, requestParameters.startIndex, requestParameters.limit, requestParameters.searchTerm, requestParameters.parentId, requestParameters.fields, requestParameters.excludeItemTypes, requestParameters.includeItemTypes, requestParameters.filters, requestParameters.isFavorite, requestParameters.mediaTypes, requestParameters.genres, requestParameters.genreIds, requestParameters.officialRatings, requestParameters.tags, requestParameters.years, requestParameters.enableUserData, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.person, requestParameters.personIds, requestParameters.personTypes, requestParameters.studios, requestParameters.studioIds, requestParameters.userId, requestParameters.nameStartsWithOrGreater, requestParameters.nameStartsWith, requestParameters.nameLessThan, requestParameters.enableImages, requestParameters.enableTotalRecordCount, options).then((request) => request(this.axios, this.basePath));
+        return PersonsApiFp(this.configuration).getPersons(requestParameters.limit, requestParameters.searchTerm, requestParameters.fields, requestParameters.filters, requestParameters.isFavorite, requestParameters.enableUserData, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.excludePersonTypes, requestParameters.personTypes, requestParameters.appearsInItemId, requestParameters.userId, requestParameters.enableImages, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -57851,7 +57026,7 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
          * @param {string} userId User id.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -57859,7 +57034,7 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPlaylistItems: async (playlistId: string, userId: string, startIndex?: number, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
+        getPlaylistItems: async (playlistId: string, userId: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'playlistId' is not null or undefined
             if (playlistId === null || playlistId === undefined) {
                 throw new RequiredError('playlistId','Required parameter playlistId was null or undefined when calling getPlaylistItems.');
@@ -57900,7 +57075,7 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -58101,7 +57276,7 @@ export const PlaylistsApiFp = function(configuration?: Configuration) {
          * @param {string} userId User id.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -58109,7 +57284,7 @@ export const PlaylistsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPlaylistItems(playlistId: string, userId: string, startIndex?: number, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getPlaylistItems(playlistId: string, userId: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await PlaylistsApiAxiosParamCreator(configuration).getPlaylistItems(playlistId, userId, startIndex, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -58185,7 +57360,7 @@ export const PlaylistsApiFactory = function (configuration?: Configuration, base
          * @param {string} userId User id.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -58193,7 +57368,7 @@ export const PlaylistsApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPlaylistItems(playlistId: string, userId: string, startIndex?: number, limit?: number, fields?: string, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getPlaylistItems(playlistId: string, userId: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, enableImages?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return PlaylistsApiFp(configuration).getPlaylistItems(playlistId, userId, startIndex, limit, fields, enableImages, enableUserData, imageTypeLimit, enableImageTypes, options).then((request) => request(axios, basePath));
         },
         /**
@@ -58299,11 +57474,11 @@ export interface PlaylistsApiGetPlaylistItemsRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof PlaylistsApiGetPlaylistItems
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Include image information in output.
@@ -65405,30 +64580,17 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Gets all studios from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -65438,7 +64600,7 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStudios: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getStudios: async (startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Studios`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -65458,10 +64620,6 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (minCommunityRating !== undefined) {
-                localVarQueryParameter['minCommunityRating'] = minCommunityRating;
-            }
-
             if (startIndex !== undefined) {
                 localVarQueryParameter['startIndex'] = startIndex;
             }
@@ -65478,7 +64636,7 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -65490,36 +64648,8 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
-            if (filters) {
-                localVarQueryParameter['filters'] = filters;
-            }
-
             if (isFavorite !== undefined) {
                 localVarQueryParameter['isFavorite'] = isFavorite;
-            }
-
-            if (mediaTypes !== undefined) {
-                localVarQueryParameter['mediaTypes'] = mediaTypes;
-            }
-
-            if (genres !== undefined) {
-                localVarQueryParameter['genres'] = genres;
-            }
-
-            if (genreIds !== undefined) {
-                localVarQueryParameter['genreIds'] = genreIds;
-            }
-
-            if (officialRatings !== undefined) {
-                localVarQueryParameter['officialRatings'] = officialRatings;
-            }
-
-            if (tags !== undefined) {
-                localVarQueryParameter['tags'] = tags;
-            }
-
-            if (years !== undefined) {
-                localVarQueryParameter['years'] = years;
             }
 
             if (enableUserData !== undefined) {
@@ -65532,26 +64662,6 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
 
             if (enableImageTypes) {
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
-            }
-
-            if (person !== undefined) {
-                localVarQueryParameter['person'] = person;
-            }
-
-            if (personIds !== undefined) {
-                localVarQueryParameter['personIds'] = personIds;
-            }
-
-            if (personTypes !== undefined) {
-                localVarQueryParameter['personTypes'] = personTypes;
-            }
-
-            if (studios !== undefined) {
-                localVarQueryParameter['studios'] = studios;
-            }
-
-            if (studioIds !== undefined) {
-                localVarQueryParameter['studioIds'] = studioIds;
             }
 
             if (userId !== undefined) {
@@ -65623,30 +64733,17 @@ export const StudiosApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Gets all studios from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -65656,8 +64753,8 @@ export const StudiosApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStudios(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
-            const localVarAxiosArgs = await StudiosApiAxiosParamCreator(configuration).getStudios(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
+        async getStudios(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+            const localVarAxiosArgs = await StudiosApiAxiosParamCreator(configuration).getStudios(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -65686,30 +64783,17 @@ export const StudiosApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary Gets all studios from a given item, folder, or the entire library.
-         * @param {number} [minCommunityRating] Optional filter by minimum community rating.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
-         * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -65719,8 +64803,8 @@ export const StudiosApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStudios(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
-            return StudiosApiFp(configuration).getStudios(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
+        getStudios(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+            return StudiosApiFp(configuration).getStudios(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -65753,13 +64837,6 @@ export interface StudiosApiGetStudioRequest {
  */
 export interface StudiosApiGetStudiosRequest {
     /**
-     * Optional filter by minimum community rating.
-     * @type {number}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly minCommunityRating?: number
-
-    /**
      * Optional. The record index to start at. All items with a lower index will be dropped from the results.
      * @type {number}
      * @memberof StudiosApiGetStudios
@@ -65788,11 +64865,11 @@ export interface StudiosApiGetStudiosRequest {
     readonly parentId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof StudiosApiGetStudios
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
@@ -65809,60 +64886,11 @@ export interface StudiosApiGetStudiosRequest {
     readonly includeItemTypes?: string
 
     /**
-     * Optional. Specify additional filters to apply.
-     * @type {Array<ItemFilter>}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly filters?: Array<ItemFilter>
-
-    /**
      * Optional filter by items that are marked as favorite, or not.
      * @type {boolean}
      * @memberof StudiosApiGetStudios
      */
     readonly isFavorite?: boolean
-
-    /**
-     * Optional filter by MediaType. Allows multiple, comma delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly mediaTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly genres?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly genreIds?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly officialRatings?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly tags?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly years?: string
 
     /**
      * Optional, include user data.
@@ -65884,41 +64912,6 @@ export interface StudiosApiGetStudiosRequest {
      * @memberof StudiosApiGetStudios
      */
     readonly enableImageTypes?: Array<ImageType>
-
-    /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly person?: string
-
-    /**
-     * Optional. If specified, results will be filtered to include only those containing the specified person ids.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly personIds?: string
-
-    /**
-     * Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly personTypes?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly studios?: string
-
-    /**
-     * Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-     * @type {string}
-     * @memberof StudiosApiGetStudios
-     */
-    readonly studioIds?: string
 
     /**
      * User id.
@@ -65991,7 +64984,7 @@ export class StudiosApi extends BaseAPI {
      * @memberof StudiosApi
      */
     public getStudios(requestParameters: StudiosApiGetStudiosRequest = {}, options?: any) {
-        return StudiosApiFp(this.configuration).getStudios(requestParameters.minCommunityRating, requestParameters.startIndex, requestParameters.limit, requestParameters.searchTerm, requestParameters.parentId, requestParameters.fields, requestParameters.excludeItemTypes, requestParameters.includeItemTypes, requestParameters.filters, requestParameters.isFavorite, requestParameters.mediaTypes, requestParameters.genres, requestParameters.genreIds, requestParameters.officialRatings, requestParameters.tags, requestParameters.years, requestParameters.enableUserData, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.person, requestParameters.personIds, requestParameters.personTypes, requestParameters.studios, requestParameters.studioIds, requestParameters.userId, requestParameters.nameStartsWithOrGreater, requestParameters.nameStartsWith, requestParameters.nameLessThan, requestParameters.enableImages, requestParameters.enableTotalRecordCount, options).then((request) => request(this.axios, this.basePath));
+        return StudiosApiFp(this.configuration).getStudios(requestParameters.startIndex, requestParameters.limit, requestParameters.searchTerm, requestParameters.parentId, requestParameters.fields, requestParameters.excludeItemTypes, requestParameters.includeItemTypes, requestParameters.isFavorite, requestParameters.enableUserData, requestParameters.imageTypeLimit, requestParameters.enableImageTypes, requestParameters.userId, requestParameters.nameStartsWithOrGreater, requestParameters.nameStartsWith, requestParameters.nameLessThan, requestParameters.enableImages, requestParameters.enableTotalRecordCount, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -66085,6 +65078,100 @@ export const SubtitleApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Gets a fallback font file.
+         * @param {string} name The name of the fallback font file to get.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFallbackFont: async (name: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'name' is not null or undefined
+            if (name === null || name === undefined) {
+                throw new RequiredError('name','Required parameter name was null or undefined when calling getFallbackFont.');
+            }
+            const localVarPath = `/FallbackFont/Fonts/{name}`
+                .replace(`{${"name"}}`, encodeURIComponent(String(name)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Gets a list of available fallback font files.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFallbackFontList: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/FallbackFont/Fonts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -66474,6 +65561,65 @@ export const SubtitleApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Upload an external subtitle file.
+         * @param {string} itemId The item the subtitle belongs to.
+         * @param {UploadSubtitleDto} uploadSubtitleDto The request body.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadSubtitle: async (itemId: string, uploadSubtitleDto: UploadSubtitleDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'itemId' is not null or undefined
+            if (itemId === null || itemId === undefined) {
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling uploadSubtitle.');
+            }
+            // verify required parameter 'uploadSubtitleDto' is not null or undefined
+            if (uploadSubtitleDto === null || uploadSubtitleDto === undefined) {
+                throw new RequiredError('uploadSubtitleDto','Required parameter uploadSubtitleDto was null or undefined when calling uploadSubtitle.');
+            }
+            const localVarPath = `/Videos/{itemId}/Subtitles`
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof uploadSubtitleDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(uploadSubtitleDto !== undefined ? uploadSubtitleDto : {}) : (uploadSubtitleDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -66508,6 +65654,33 @@ export const SubtitleApiFp = function(configuration?: Configuration) {
          */
         async downloadRemoteSubtitles(itemId: string, subtitleId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).downloadRemoteSubtitles(itemId, subtitleId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Gets a fallback font file.
+         * @param {string} name The name of the fallback font file to get.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getFallbackFont(name: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getFallbackFont(name, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Gets a list of available fallback font files.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getFallbackFontList(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FontFile>>> {
+            const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getFallbackFontList(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -66602,6 +65775,21 @@ export const SubtitleApiFp = function(configuration?: Configuration) {
                 return axios.request(axiosRequestArgs);
             };
         },
+        /**
+         * 
+         * @summary Upload an external subtitle file.
+         * @param {string} itemId The item the subtitle belongs to.
+         * @param {UploadSubtitleDto} uploadSubtitleDto The request body.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadSubtitle(itemId: string, uploadSubtitleDto: UploadSubtitleDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).uploadSubtitle(itemId, uploadSubtitleDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
     }
 };
 
@@ -66632,6 +65820,25 @@ export const SubtitleApiFactory = function (configuration?: Configuration, baseP
          */
         downloadRemoteSubtitles(itemId: string, subtitleId: string, options?: any): AxiosPromise<void> {
             return SubtitleApiFp(configuration).downloadRemoteSubtitles(itemId, subtitleId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Gets a fallback font file.
+         * @param {string} name The name of the fallback font file to get.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFallbackFont(name: string, options?: any): AxiosPromise<void> {
+            return SubtitleApiFp(configuration).getFallbackFont(name, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Gets a list of available fallback font files.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFallbackFontList(options?: any): AxiosPromise<Array<FontFile>> {
+            return SubtitleApiFp(configuration).getFallbackFontList(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -66702,6 +65909,17 @@ export const SubtitleApiFactory = function (configuration?: Configuration, baseP
         searchRemoteSubtitles(itemId: string, language: string, isPerfectMatch?: boolean, options?: any): AxiosPromise<Array<RemoteSubtitleInfo>> {
             return SubtitleApiFp(configuration).searchRemoteSubtitles(itemId, language, isPerfectMatch, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Upload an external subtitle file.
+         * @param {string} itemId The item the subtitle belongs to.
+         * @param {UploadSubtitleDto} uploadSubtitleDto The request body.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadSubtitle(itemId: string, uploadSubtitleDto: UploadSubtitleDto, options?: any): AxiosPromise<void> {
+            return SubtitleApiFp(configuration).uploadSubtitle(itemId, uploadSubtitleDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -66745,6 +65963,20 @@ export interface SubtitleApiDownloadRemoteSubtitlesRequest {
      * @memberof SubtitleApiDownloadRemoteSubtitles
      */
     readonly subtitleId: string
+}
+
+/**
+ * Request parameters for getFallbackFont operation in SubtitleApi.
+ * @export
+ * @interface SubtitleApiGetFallbackFontRequest
+ */
+export interface SubtitleApiGetFallbackFontRequest {
+    /**
+     * The name of the fallback font file to get.
+     * @type {string}
+     * @memberof SubtitleApiGetFallbackFont
+     */
+    readonly name: string
 }
 
 /**
@@ -66951,6 +66183,27 @@ export interface SubtitleApiSearchRemoteSubtitlesRequest {
 }
 
 /**
+ * Request parameters for uploadSubtitle operation in SubtitleApi.
+ * @export
+ * @interface SubtitleApiUploadSubtitleRequest
+ */
+export interface SubtitleApiUploadSubtitleRequest {
+    /**
+     * The item the subtitle belongs to.
+     * @type {string}
+     * @memberof SubtitleApiUploadSubtitle
+     */
+    readonly itemId: string
+
+    /**
+     * The request body.
+     * @type {UploadSubtitleDto}
+     * @memberof SubtitleApiUploadSubtitle
+     */
+    readonly uploadSubtitleDto: UploadSubtitleDto
+}
+
+/**
  * SubtitleApi - object-oriented interface
  * @export
  * @class SubtitleApi
@@ -66979,6 +66232,29 @@ export class SubtitleApi extends BaseAPI {
      */
     public downloadRemoteSubtitles(requestParameters: SubtitleApiDownloadRemoteSubtitlesRequest, options?: any) {
         return SubtitleApiFp(this.configuration).downloadRemoteSubtitles(requestParameters.itemId, requestParameters.subtitleId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Gets a fallback font file.
+     * @param {SubtitleApiGetFallbackFontRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SubtitleApi
+     */
+    public getFallbackFont(requestParameters: SubtitleApiGetFallbackFontRequest, options?: any) {
+        return SubtitleApiFp(this.configuration).getFallbackFont(requestParameters.name, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Gets a list of available fallback font files.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SubtitleApi
+     */
+    public getFallbackFontList(options?: any) {
+        return SubtitleApiFp(this.configuration).getFallbackFontList(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -67039,6 +66315,18 @@ export class SubtitleApi extends BaseAPI {
      */
     public searchRemoteSubtitles(requestParameters: SubtitleApiSearchRemoteSubtitlesRequest, options?: any) {
         return SubtitleApiFp(this.configuration).searchRemoteSubtitles(requestParameters.itemId, requestParameters.language, requestParameters.isPerfectMatch, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Upload an external subtitle file.
+     * @param {SubtitleApiUploadSubtitleRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SubtitleApi
+     */
+    public uploadSubtitle(requestParameters: SubtitleApiUploadSubtitleRequest, options?: any) {
+        return SubtitleApiFp(this.configuration).uploadSubtitle(requestParameters.itemId, requestParameters.uploadSubtitleDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -69109,7 +68397,7 @@ export const TrailersApiAxiosParamCreator = function (configuration?: Configurat
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
@@ -69158,7 +68446,7 @@ export const TrailersApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTrailers: async (userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getTrailers: async (userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Trailers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -69318,7 +68606,7 @@ export const TrailersApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -69565,7 +68853,7 @@ export const TrailersApiFp = function(configuration?: Configuration) {
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
@@ -69614,7 +68902,7 @@ export const TrailersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTrailers(userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getTrailers(userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await TrailersApiAxiosParamCreator(configuration).getTrailers(userId, maxOfficialRating, hasThemeSong, hasThemeVideo, hasSubtitles, hasSpecialFeature, hasTrailer, adjacentTo, parentIndexNumber, hasParentalRating, isHd, is4K, locationTypes, excludeLocationTypes, isMissing, isUnaired, minCommunityRating, minCriticRating, minPremiereDate, minDateLastSaved, minDateLastSavedForUser, maxPremiereDate, hasOverview, hasImdbId, hasTmdbId, hasTvdbId, excludeItemIds, startIndex, limit, recursive, searchTerm, sortOrder, parentId, fields, excludeItemTypes, filters, isFavorite, mediaTypes, imageTypes, sortBy, isPlayed, genres, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, artists, excludeArtistIds, artistIds, albumArtistIds, contributingArtistIds, albums, albumIds, ids, videoTypes, minOfficialRating, isLocked, isPlaceHolder, hasOfficialRating, collapseBoxSetItems, minWidth, minHeight, maxWidth, maxHeight, is3D, seriesStatus, nameStartsWithOrGreater, nameStartsWith, nameLessThan, studioIds, genreIds, enableTotalRecordCount, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -69666,7 +68954,7 @@ export const TrailersApiFactory = function (configuration?: Configuration, baseP
          * @param {string} [searchTerm] Optional. Filter based on a search term.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply. This allows multiple, comma delimeted. Options: IsFolder, IsNotFolder, IsUnplayed, IsPlayed, IsFavorite, IsResumable, Likes, Dislikes.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
@@ -69715,7 +69003,7 @@ export const TrailersApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTrailers(userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getTrailers(userId?: string, maxOfficialRating?: string, hasThemeSong?: boolean, hasThemeVideo?: boolean, hasSubtitles?: boolean, hasSpecialFeature?: boolean, hasTrailer?: boolean, adjacentTo?: string, parentIndexNumber?: number, hasParentalRating?: boolean, isHd?: boolean, is4K?: boolean, locationTypes?: string, excludeLocationTypes?: Array<LocationType>, isMissing?: boolean, isUnaired?: boolean, minCommunityRating?: number, minCriticRating?: number, minPremiereDate?: string, minDateLastSaved?: string, minDateLastSavedForUser?: string, maxPremiereDate?: string, hasOverview?: boolean, hasImdbId?: boolean, hasTmdbId?: boolean, hasTvdbId?: boolean, excludeItemIds?: string, startIndex?: number, limit?: number, recursive?: boolean, searchTerm?: string, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, imageTypes?: Array<ImageType>, sortBy?: string, isPlayed?: boolean, genres?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, artists?: string, excludeArtistIds?: string, artistIds?: string, albumArtistIds?: string, contributingArtistIds?: string, albums?: string, albumIds?: string, ids?: string, videoTypes?: string, minOfficialRating?: string, isLocked?: boolean, isPlaceHolder?: boolean, hasOfficialRating?: boolean, collapseBoxSetItems?: boolean, minWidth?: number, minHeight?: number, maxWidth?: number, maxHeight?: number, is3D?: boolean, seriesStatus?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, studioIds?: string, genreIds?: string, enableTotalRecordCount?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return TrailersApiFp(configuration).getTrailers(userId, maxOfficialRating, hasThemeSong, hasThemeVideo, hasSubtitles, hasSpecialFeature, hasTrailer, adjacentTo, parentIndexNumber, hasParentalRating, isHd, is4K, locationTypes, excludeLocationTypes, isMissing, isUnaired, minCommunityRating, minCriticRating, minPremiereDate, minDateLastSaved, minDateLastSavedForUser, maxPremiereDate, hasOverview, hasImdbId, hasTmdbId, hasTvdbId, excludeItemIds, startIndex, limit, recursive, searchTerm, sortOrder, parentId, fields, excludeItemTypes, filters, isFavorite, mediaTypes, imageTypes, sortBy, isPlayed, genres, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, artists, excludeArtistIds, artistIds, albumArtistIds, contributingArtistIds, albums, albumIds, ids, videoTypes, minOfficialRating, isLocked, isPlaceHolder, hasOfficialRating, collapseBoxSetItems, minWidth, minHeight, maxWidth, maxHeight, is3D, seriesStatus, nameStartsWithOrGreater, nameStartsWith, nameLessThan, studioIds, genreIds, enableTotalRecordCount, enableImages, options).then((request) => request(axios, basePath));
         },
     };
@@ -69960,10 +69248,10 @@ export interface TrailersApiGetTrailersRequest {
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof TrailersApiGetTrailers
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
@@ -70313,7 +69601,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Gets episodes for a tv season.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {number} [season] Optional filter by season number.
          * @param {string} [seasonId] Optional. Filter by season id.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
@@ -70329,7 +69617,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEpisodes: async (seriesId: string, userId?: string, fields?: string, season?: number, seasonId?: string, isMissing?: boolean, adjacentTo?: string, startItemId?: string, startIndex?: number, limit?: number, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, sortBy?: string, options: any = {}): Promise<RequestArgs> => {
+        getEpisodes: async (seriesId: string, userId?: string, fields?: Array<ItemFields>, season?: number, seasonId?: string, isMissing?: boolean, adjacentTo?: string, startItemId?: string, startIndex?: number, limit?: number, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, sortBy?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'seriesId' is not null or undefined
             if (seriesId === null || seriesId === undefined) {
                 throw new RequiredError('seriesId','Required parameter seriesId was null or undefined when calling getEpisodes.');
@@ -70358,7 +69646,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['userId'] = userId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -70434,7 +69722,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [userId] The user id of the user to get the next up episodes for.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [seriesId] Optional. Filter by series id.
          * @param {string} [parentId] Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {boolean} [enableImges] Optional. Include image information in output.
@@ -70445,7 +69733,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getNextUp: async (userId?: string, startIndex?: number, limit?: number, fields?: string, seriesId?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getNextUp: async (userId?: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, seriesId?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Shows/NextUp`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -70477,7 +69765,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -70532,7 +69820,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Gets seasons for a tv series.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {boolean} [isSpecialSeason] Optional. Filter by special season.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
          * @param {string} [adjacentTo] Optional. Return items that are siblings of a supplied item.
@@ -70543,7 +69831,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSeasons: async (seriesId: string, userId?: string, fields?: string, isSpecialSeason?: boolean, isMissing?: boolean, adjacentTo?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getSeasons: async (seriesId: string, userId?: string, fields?: Array<ItemFields>, isSpecialSeason?: boolean, isMissing?: boolean, adjacentTo?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'seriesId' is not null or undefined
             if (seriesId === null || seriesId === undefined) {
                 throw new RequiredError('seriesId','Required parameter seriesId was null or undefined when calling getSeasons.');
@@ -70572,7 +69860,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['userId'] = userId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -70628,7 +69916,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [userId] The user id of the user to get the upcoming episodes for.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [parentId] Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {boolean} [enableImges] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -70637,7 +69925,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUpcomingEpisodes: async (userId?: string, startIndex?: number, limit?: number, fields?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getUpcomingEpisodes: async (userId?: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Shows/Upcoming`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -70669,7 +69957,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['limit'] = limit;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -70725,7 +70013,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @summary Gets episodes for a tv season.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {number} [season] Optional filter by season number.
          * @param {string} [seasonId] Optional. Filter by season id.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
@@ -70741,7 +70029,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEpisodes(seriesId: string, userId?: string, fields?: string, season?: number, seasonId?: string, isMissing?: boolean, adjacentTo?: string, startItemId?: string, startIndex?: number, limit?: number, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, sortBy?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getEpisodes(seriesId: string, userId?: string, fields?: Array<ItemFields>, season?: number, seasonId?: string, isMissing?: boolean, adjacentTo?: string, startItemId?: string, startIndex?: number, limit?: number, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, sortBy?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await TvShowsApiAxiosParamCreator(configuration).getEpisodes(seriesId, userId, fields, season, seasonId, isMissing, adjacentTo, startItemId, startIndex, limit, enableImages, imageTypeLimit, enableImageTypes, enableUserData, sortBy, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -70754,7 +70042,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @param {string} [userId] The user id of the user to get the next up episodes for.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [seriesId] Optional. Filter by series id.
          * @param {string} [parentId] Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {boolean} [enableImges] Optional. Include image information in output.
@@ -70765,7 +70053,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getNextUp(userId?: string, startIndex?: number, limit?: number, fields?: string, seriesId?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getNextUp(userId?: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, seriesId?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await TvShowsApiAxiosParamCreator(configuration).getNextUp(userId, startIndex, limit, fields, seriesId, parentId, enableImges, imageTypeLimit, enableImageTypes, enableUserData, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -70777,7 +70065,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @summary Gets seasons for a tv series.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {boolean} [isSpecialSeason] Optional. Filter by special season.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
          * @param {string} [adjacentTo] Optional. Return items that are siblings of a supplied item.
@@ -70788,7 +70076,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSeasons(seriesId: string, userId?: string, fields?: string, isSpecialSeason?: boolean, isMissing?: boolean, adjacentTo?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSeasons(seriesId: string, userId?: string, fields?: Array<ItemFields>, isSpecialSeason?: boolean, isMissing?: boolean, adjacentTo?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await TvShowsApiAxiosParamCreator(configuration).getSeasons(seriesId, userId, fields, isSpecialSeason, isMissing, adjacentTo, enableImages, imageTypeLimit, enableImageTypes, enableUserData, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -70801,7 +70089,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @param {string} [userId] The user id of the user to get the upcoming episodes for.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [parentId] Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {boolean} [enableImges] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -70810,7 +70098,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUpcomingEpisodes(userId?: string, startIndex?: number, limit?: number, fields?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getUpcomingEpisodes(userId?: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await TvShowsApiAxiosParamCreator(configuration).getUpcomingEpisodes(userId, startIndex, limit, fields, parentId, enableImges, imageTypeLimit, enableImageTypes, enableUserData, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -70831,7 +70119,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @summary Gets episodes for a tv season.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {number} [season] Optional filter by season number.
          * @param {string} [seasonId] Optional. Filter by season id.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
@@ -70847,7 +70135,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEpisodes(seriesId: string, userId?: string, fields?: string, season?: number, seasonId?: string, isMissing?: boolean, adjacentTo?: string, startItemId?: string, startIndex?: number, limit?: number, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, sortBy?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getEpisodes(seriesId: string, userId?: string, fields?: Array<ItemFields>, season?: number, seasonId?: string, isMissing?: boolean, adjacentTo?: string, startItemId?: string, startIndex?: number, limit?: number, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, sortBy?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return TvShowsApiFp(configuration).getEpisodes(seriesId, userId, fields, season, seasonId, isMissing, adjacentTo, startItemId, startIndex, limit, enableImages, imageTypeLimit, enableImageTypes, enableUserData, sortBy, options).then((request) => request(axios, basePath));
         },
         /**
@@ -70856,7 +70144,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [userId] The user id of the user to get the next up episodes for.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [seriesId] Optional. Filter by series id.
          * @param {string} [parentId] Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {boolean} [enableImges] Optional. Include image information in output.
@@ -70867,7 +70155,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getNextUp(userId?: string, startIndex?: number, limit?: number, fields?: string, seriesId?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getNextUp(userId?: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, seriesId?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return TvShowsApiFp(configuration).getNextUp(userId, startIndex, limit, fields, seriesId, parentId, enableImges, imageTypeLimit, enableImageTypes, enableUserData, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -70875,7 +70163,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @summary Gets seasons for a tv series.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {boolean} [isSpecialSeason] Optional. Filter by special season.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
          * @param {string} [adjacentTo] Optional. Return items that are siblings of a supplied item.
@@ -70886,7 +70174,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSeasons(seriesId: string, userId?: string, fields?: string, isSpecialSeason?: boolean, isMissing?: boolean, adjacentTo?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSeasons(seriesId: string, userId?: string, fields?: Array<ItemFields>, isSpecialSeason?: boolean, isMissing?: boolean, adjacentTo?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return TvShowsApiFp(configuration).getSeasons(seriesId, userId, fields, isSpecialSeason, isMissing, adjacentTo, enableImages, imageTypeLimit, enableImageTypes, enableUserData, options).then((request) => request(axios, basePath));
         },
         /**
@@ -70895,7 +70183,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [userId] The user id of the user to get the upcoming episodes for.
          * @param {number} [startIndex] Optional. The record index to start at. All items with a lower index will be dropped from the results.
          * @param {number} [limit] Optional. The maximum number of records to return.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [parentId] Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {boolean} [enableImges] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -70904,7 +70192,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUpcomingEpisodes(userId?: string, startIndex?: number, limit?: number, fields?: string, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getUpcomingEpisodes(userId?: string, startIndex?: number, limit?: number, fields?: Array<ItemFields>, parentId?: string, enableImges?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return TvShowsApiFp(configuration).getUpcomingEpisodes(userId, startIndex, limit, fields, parentId, enableImges, imageTypeLimit, enableImageTypes, enableUserData, options).then((request) => request(axios, basePath));
         },
     };
@@ -70932,10 +70220,10 @@ export interface TvShowsApiGetEpisodesRequest {
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof TvShowsApiGetEpisodes
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional filter by season number.
@@ -71050,11 +70338,11 @@ export interface TvShowsApiGetNextUpRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof TvShowsApiGetNextUp
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Filter by series id.
@@ -71128,10 +70416,10 @@ export interface TvShowsApiGetSeasonsRequest {
 
     /**
      * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * @type {Array<ItemFields>}
      * @memberof TvShowsApiGetSeasons
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Filter by special season.
@@ -71211,11 +70499,11 @@ export interface TvShowsApiGetUpcomingEpisodesRequest {
     readonly limit?: number
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof TvShowsApiGetUpcomingEpisodes
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. Specify this to localize the search to a specific item or folder. Omit to use the root.
@@ -73913,7 +73201,7 @@ export const UserLibraryApiAxiosParamCreator = function (configuration?: Configu
          * @summary Gets latest media.
          * @param {string} userId User id.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {boolean} [isPlayed] Filter by items that are played, or not.
          * @param {boolean} [enableImages] Optional. include image information in output.
@@ -73925,7 +73213,7 @@ export const UserLibraryApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestMedia: async (userId: string, parentId?: string, fields?: string, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getLatestMedia: async (userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling getLatestMedia.');
@@ -73954,7 +73242,7 @@ export const UserLibraryApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -74402,7 +73690,7 @@ export const UserLibraryApiFp = function(configuration?: Configuration) {
          * @summary Gets latest media.
          * @param {string} userId User id.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {boolean} [isPlayed] Filter by items that are played, or not.
          * @param {boolean} [enableImages] Optional. include image information in output.
@@ -74414,7 +73702,7 @@ export const UserLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLatestMedia(userId: string, parentId?: string, fields?: string, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseItemDto>>> {
+        async getLatestMedia(userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseItemDto>>> {
             const localVarAxiosArgs = await UserLibraryApiAxiosParamCreator(configuration).getLatestMedia(userId, parentId, fields, includeItemTypes, isPlayed, enableImages, imageTypeLimit, enableImageTypes, enableUserData, limit, groupItems, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -74558,7 +73846,7 @@ export const UserLibraryApiFactory = function (configuration?: Configuration, ba
          * @summary Gets latest media.
          * @param {string} userId User id.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
          * @param {boolean} [isPlayed] Filter by items that are played, or not.
          * @param {boolean} [enableImages] Optional. include image information in output.
@@ -74570,7 +73858,7 @@ export const UserLibraryApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestMedia(userId: string, parentId?: string, fields?: string, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): AxiosPromise<Array<BaseItemDto>> {
+        getLatestMedia(userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): AxiosPromise<Array<BaseItemDto>> {
             return UserLibraryApiFp(configuration).getLatestMedia(userId, parentId, fields, includeItemTypes, isPlayed, enableImages, imageTypeLimit, enableImageTypes, enableUserData, limit, groupItems, options).then((request) => request(axios, basePath));
         },
         /**
@@ -74726,11 +74014,11 @@ export interface UserLibraryApiGetLatestMediaRequest {
     readonly parentId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof UserLibraryApiGetLatestMedia
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
@@ -79881,7 +79169,7 @@ export const YearsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
          * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
@@ -79895,7 +79183,7 @@ export const YearsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getYears: async (startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getYears: async (startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Years`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -79931,7 +79219,7 @@ export const YearsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['parentId'] = parentId;
             }
 
-            if (fields !== undefined) {
+            if (fields) {
                 localVarQueryParameter['fields'] = fields;
             }
 
@@ -80024,7 +79312,7 @@ export const YearsApiFp = function(configuration?: Configuration) {
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
          * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
@@ -80038,7 +79326,7 @@ export const YearsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await YearsApiAxiosParamCreator(configuration).getYears(startIndex, limit, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, mediaTypes, sortBy, enableUserData, imageTypeLimit, enableImageTypes, userId, recursive, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -80072,7 +79360,7 @@ export const YearsApiFactory = function (configuration?: Configuration, basePath
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
-         * @param {string} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {string} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
          * @param {string} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
          * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
@@ -80086,7 +79374,7 @@ export const YearsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: string, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return YearsApiFp(configuration).getYears(startIndex, limit, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, mediaTypes, sortBy, enableUserData, imageTypeLimit, enableImageTypes, userId, recursive, enableImages, options).then((request) => request(axios, basePath));
         },
     };
@@ -80148,11 +79436,11 @@ export interface YearsApiGetYearsRequest {
     readonly parentId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines.
-     * @type {string}
+     * Optional. Specify additional fields of information to return in the output.
+     * @type {Array<ItemFields>}
      * @memberof YearsApiGetYears
      */
-    readonly fields?: string
+    readonly fields?: Array<ItemFields>
 
     /**
      * Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
