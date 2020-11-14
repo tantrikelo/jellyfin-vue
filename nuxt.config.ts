@@ -145,7 +145,11 @@ const config: NuxtConfig = {
     ],
     lazy: true,
     langDir: 'locales/',
-    strategy: 'no_prefix'
+    strategy: 'no_prefix',
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en'
+    }
   },
   /*
    ** vuetify module configuration
