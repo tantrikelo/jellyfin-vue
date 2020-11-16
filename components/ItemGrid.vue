@@ -42,6 +42,7 @@
 <script lang="ts">
 import { chunk } from 'lodash';
 import Vue from 'vue';
+import { BaseItemDto } from '~/api';
 
 export default Vue.extend({
   props: {
@@ -55,35 +56,33 @@ export default Vue.extend({
     }
   },
   computed: {
-    itemsChunks: {
-      get() {
-        let cardsPerLine = 8;
+    itemsChunks(): { [id: number]: BaseItemDto }[] {
+      let cardsPerLine = 8;
 
-        if (this.$vuetify.breakpoint.smAndDown) {
-          cardsPerLine = 3;
-        } else if (
-          this.$vuetify.breakpoint.smAndUp &&
-          !this.$vuetify.breakpoint.lgAndUp
-        ) {
-          cardsPerLine = 4;
-        } else if (
-          this.$vuetify.breakpoint.lgAndUp &&
-          !this.$vuetify.breakpoint.xlOnly
-        ) {
-          cardsPerLine = 6;
-        }
-
-        const chunks = chunk(this.items, cardsPerLine);
-
-        const keyedChunks = chunks.map((itemChunk, index) => {
-          return {
-            id: index,
-            chunk: itemChunk
-          };
-        });
-
-        return keyedChunks;
+      if (this.$vuetify.breakpoint.smAndDown) {
+        cardsPerLine = 3;
+      } else if (
+        this.$vuetify.breakpoint.smAndUp &&
+        !this.$vuetify.breakpoint.lgAndUp
+      ) {
+        cardsPerLine = 4;
+      } else if (
+        this.$vuetify.breakpoint.lgAndUp &&
+        !this.$vuetify.breakpoint.xlOnly
+      ) {
+        cardsPerLine = 6;
       }
+
+      const chunks = chunk(this.items, cardsPerLine);
+
+      const keyedChunks = chunks.map((itemChunk, index) => {
+        return {
+          id: index,
+          chunk: itemChunk as BaseItemDto
+        };
+      });
+
+      return keyedChunks;
     }
   }
 });
